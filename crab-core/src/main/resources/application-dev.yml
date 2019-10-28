@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    url: jdbc:mysql://47.96.16.46:3306/crab?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: "Yu_8168907"
+    filters: wall,mergeStat
+  redis:
+    mode: OFF
+    host: 47.96.16.46
+    port: 6379
+    password: SAOjHRGRk68oUk9oZFzk
+  env: dev
+
+myProps:
+  redirectUrl: https://qa.51ganjie.cn
+
+  #----------------------------------------------------xxl-job-start-----------------------------
+  #logging:
+  #  config: classpath:logback.xml
+  ### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl:
+  job:
+    admin:
+      addresses: http://120.55.73.24:18080
+    ### xxl-job executor address
+    executor:
+      appname: ganjie-job-executor-gop-new
+      ip:
+      port: 19002
+      groupId: 1
+      ### xxl-job log path
+      logpath: /data/applogs/xxl-job/jobhandler
+      ### xxl-job log retention days
+      logretentiondays: 7
+    ### xxl-job, access token
+    accessToken: bfea22de-ee23-49a3-a3a0-bfe8a7682f877EC109D3E0D3
+  #----------------------------------------------------xxl-job-----------------------------
+
+
+#----------------------------------------------------微信支付宝支付及授权相关参数 begin-----------------------------
+pay:
+  weixin:
+    app:
+      notifyUrl: https://dev.51ganjie.cn/wx/weixinPayNotify.do
+      appId: wxfc5b2627e89f071c
+      mchID: 1536058601
+      key: aqn93kqj71k3s0o4do2maguk85emwang
+      certPath: /home/ganjie/workspace/ganjie/cert/weixin/apiclient.p12
+    js:
+      notifyUrl: https://dev.51ganjie.cn/wx/weixinJsPayNotify.do
+      appId: wx585a2925e7b43fac
+      mchID: 1536058601
+      key: aqn93kqj71k3s0o4do2maguk85emwang
+      certPath:  /home/ganjie/workspace/ganjie/cert/weixin/apiclient.p12
+    mini:
+      notifyUrl: https://dev.51ganjie.cn/wx/weixinMiniPayNotify.do
+      appId: wx49e305c638e38ee2
+      mchID: 1536058601
+      key: aqn93kqj71k3s0o4do2maguk85emwang
+      certPath: /home/ganjie/workspace/ganjie/cert/weixin/apiclient.p12
+      appSecret: 35d5d32f7dc3e2845331bc9eae24bb41
+  ali:
+    appId:  2015112900886894
+    aliGetWay:  https://openapi.alipay.com/gateway.do
+    notifyUrl:  https://dev.51ganjie.cn/pay/aliPayNotify.do
+    keyPrivate:  MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDTAvdSrOEsRe6ODdlOn3I8X9KjW3JxISGBRRfh/J/Mc5MJNHZl7O6rrkXWnKnQyhNx6rsKW/h2VBd8aj+d2BMOeo4eH1K95P/tK1EHdxaibNl9qXEtfGhiS8W0nOze7Jx9opaW9i8D2QMa5TCzFCBKpLwjwl+wmthvmyQEoml4CykOc2nFud8WfXZx2ZfMj353WZFLnosPi0sv48O0IOhXqFaPIFyzOP9lwy5ESz92LEILmTGRXmPi3oBph1Ic5CRmJFHKQet5ztAXNxUs0yI1ha2b0A3jsiqSNH1ZmqLmBLmxpAsKema7p8S0/+yAf8Zld++9CJqZ1xhHhdyHkhglAgMBAAECggEASwunAlRR0PkeGo96VagHbMl3lHmVff6Wd+8my0yZWJFSHdf2s9FMIOreE7GsA4Ga4MzmsIx9FThbEfiHn4+VV3Tmzne9aaPkEWlybAFCn4mu4C4+/jpctXjVW6Lj63SjQ1try0zK88def1Y7t7TUtzdXYjBi7+BiUW8PpEZO1E4eLn2sCiyBbVmiSUu+7uXm5hh3rvtW9Z2GcLJ1zTGYyhu0N4+RUh8zGVQ36NoDIlcZhUC3QJchFPcVR6bFsP8e3D93geovIJ+b7otPVETDpxPqVPlZmSScD4PNkHRFefNKez/OxHqW7T5EZq029JnM6G6LKOPAyfYNE3BW0nsQkQKBgQD3Ff2NpZzizq74N0RWMWdILSAo51giIgvxFlmOne3HhELVUgtSmClMKKVQK1c5EgtU0FtZPE2+gUGHgtZg7w3rhTZwfoogLKIrIVY9ohxbn2VyLEw4ihm6beHqQSZ2b0mA4VMiZ+GMkxtrGmcjCrBS22VZwqZ56e47zIaoWDFjbwKBgQDan83rJwE5U9rMZexJLXI4WtaJvkLq9cup5wGtxo4XsNwC+2dy6Yrrgvpxkff6qDNslytucDvQb1zOCTjmubY9f6KUtGSHZLyQa38RzVwkV5HI2PVqvXnNoX2HlQdfk/BJ63xWM7G5mwaOAY8aipUilug9ECRtPoe8LEvuQYujqwKBgHoUB16AwO7ep1xEEiNz7U+f3A/ZnZXftH69SCpKpTy6gDrdenKoc18JhgQCJeownCCfgUKppM/HFRVa84iZFAuVmbwjCSO0abtdkTqKafBq5LhwYohc0zFlMQWIgvRpL6vZqDWLlcjateVI+kQ597w4Ye7jWVVK20X4W1+5k01JAoGAHXZrycT35UHnuqQBs9rsCaw0PVvmqMN3Lu5yy3h2rbqn6771sgbHMfX0yllhkeYZCAlXUQrPBMf9OccEZBOi+6a3wlKNObHZt5zFAyEpybwDaY3ThQ8D2zJoOF1dIQRO3ademj9dNCYwO/L51hnW/1JW+eOzBQXoRPOzR+iNaQECgYEAsEOG2pFuQtH5TU+PsHvWJJFc9jlA6gZxU7wddt2OzJKvI1uSQTOz7GdwfzD7Yz6dDnywwq3FW4LdDDRTkTNoVlIBC82LOwTReK76ubdo0erSQ3qvk53gS1/ZZJBwKfIlgo1CfHCAB1oXHt9oeBRw4JRgTDLBsidBDhNKWrCW+ec=
+    keyPublic:  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh7BqCbl3yPUldHY6mJY2Pfnsn7hZygWg59SsoaUPE/fleWJjz0Leyyxd1qInisAwbI0BpdwnCdJZXzZaBu4ABt0y0TlQUTXIwP2lSnlcgderdGawj2KJbzPpve1zvFnr1rnNCj51rljjNeOc5/BerpYtsN36/tfOSJfnjkZD+gJNlPDn3MYSw7T2BD+1WiH9o1MSXdM67KOSAS9RmiP5FdCStyPPcRDE1kEOca17cvZgfa/ymCRkDFWOVG1lkZeJ3Hl1y/DyZXPNUi5msXu9hdomC9lrq5KRkNFJAzwrQB5ekMl6wwMiN574JSb293AQBXG5zTXJKHglT1FrTaM8FwIDAQAB
+
+#----------------------------------------------------微信支付宝支付及授权相关参数 end-----------------------------

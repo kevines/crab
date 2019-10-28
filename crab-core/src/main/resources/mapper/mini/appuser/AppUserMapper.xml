@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wentuo.crab.modular.mini.mapper.appuser.AppUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wentuo.crab.modular.mini.entity.appuser.AppUser">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="real_name" property="realName"/>
+        <result column="sex" property="sex"/>
+        <result column="birthday" property="birthday"/>
+        <result column="photo" property="photo"/>
+        <result column="wx_photo" property="wxPhoto"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="qq" property="qq"/>
+        <result column="wx" property="wx"/>
+        <result column="user_type" property="userType"/>
+        <result column="pwd" property="pwd"/>
+        <result column="pay_pwd" property="payPwd"/>
+        <result column="user_district_code" property="userDistrictCode"/>
+        <result column="form_id" property="formId"/>
+        <result column="open_id" property="openId"/>
+        <result column="open_id_h5" property="openIdH5"/>
+        <result column="open_id_mini" property="openIdMini"/>
+        <result column="union_id" property="unionId"/>
+        <result column="is_exam" property="isExam"/>
+        <result column="creator" property="creator"/>
+        <result column="modifier" property="modifier"/>
+        <result column="gmt_created" property="gmtCreated"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        base.id, base.user_id, base.name, base.nick_name, base.real_name, base.sex, base.birthday,
+        base.photo, base.wx_photo, base.phone, base.email, base.user_type, base.pwd, base.pay_pwd, base.user_district_code,
+        base.form_id, base.open_id, base.open_id_h5, base.open_id_mini, base.union_id, base.is_exam
+        base.creator, base.modifier, base.gmt_created, base.gmt_modified, base.is_deleted
+    </sql>
+
+
+</mapper>

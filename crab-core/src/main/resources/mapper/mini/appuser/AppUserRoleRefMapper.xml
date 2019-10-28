@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wentuo.crab.modular.mini.mapper.appuser.AppUserRoleRefMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wentuo.crab.modular.mini.entity.appuser.AppUserRoleRef">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="role_code" property="roleCode" />
+        <result column="gmt_created" property="gmtCreated" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        base.id, base.user_id, base.role_code, base.gmt_created, base.is_deleted
+    </sql>
+
+
+    <!-- 通过用户id查找用户角色 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select * from app_user_role_ref where user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

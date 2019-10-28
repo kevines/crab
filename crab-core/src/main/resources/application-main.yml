@@ -1,0 +1,69 @@
+mybatis-plus:
+  typeAliasesPackage: com.wentuo.crab.*.entity
+  mapper-locations: classpath:mapper/**/*.xml
+  type-handlers-package: com.wentuo.crab.config.mybatis
+
+
+
+#短信服务
+sms:
+  vertify:
+    account: 98a825
+    password: 0fmsqjwtbh
+    posturl: http://api.chanzor.com/sms.aspx?action=send
+  product:
+    account: 98a937
+    password: 8rfaltnyx6
+    posturl: http://api.chanzor.com/sms.aspx?action=send
+
+#总营运平台账户ID
+props:
+  partnerGoodsId: GD20180515154512    #大礼包商品ID
+  gopUserId: AU2017122016101    #总运营平台用户Id
+  defultHeadImg: https://ganjie-oss.oss-cn-hangzhou.aliyuncs.com/img/touxiang.png #默认头像地址
+
+
+aliyun:
+  oss:
+    STSaccessKeyId: LTAIwfYdrrr19MGI
+    STSaccessKeySecret: YpkZza0YsHDYGU1L4XfylGpWpqe7Hb
+    RoleArn: acs:ram::1155099346379756:role/aliyunosstokengeneratorrole
+    RoleSessionName: external-username
+    DurationSeconds: 3600
+    region: cn-hangzhou
+#    endpoint:
+#      in: oss-cn-hangzhou-internal.aliyuncs.com
+#      out: oss-cn-hangzhou.aliyuncs.com
+#    bucket: ganjie-oss
+#    outputBucket: ganjie-oss
+#    accessKeyId: b6M7ONqcAbm2UV1K
+#    accessKeySecret: XkXXQSDIKnKdGXafL3SXGfK7FJa9oC
+#    ossLocation: oss-cn-hangzhou
+#    pipelineId: 346da91e105147a5a1f37f2fe739bfa9
+
+##邮箱
+spring:
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qiye.aliyun.com
+    port: 465
+    username: yuwenbo@iwentuo.com
+    password: iWENTUO12345
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
+          ssl:
+            enable: true
+  #这个是处理时间返回格式得东西
+  jackson:
+#    serialization:
+#      write-dates-as-timestamps: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: "100MB"
+      max-request-size: "100MB"
+

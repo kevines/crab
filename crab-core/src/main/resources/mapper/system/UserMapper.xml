@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wentuo.crab.modular.system.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wentuo.crab.modular.system.entity.User">
+        <id column="USER_ID" property="userId"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="ACCOUNT" property="account"/>
+        <result column="PASSWORD" property="password"/>
+        <result column="ROLE_ID" property="roleId"/>
+        <result column="DEPT_ID" property="deptId"/>
+        <result column="CREATE_TIME" property="createTime"/>
+    </resultMap>
+
+
+    <update id="setStatus">
+		update sys_user set STATUS = #{status} where USER_ID = #{userId}
+	</update>
+
+    <update id="changePwd">
+		update sys_user set PASSWORD = #{pwd} where USER_ID = #{userId}
+	</update>
+
+    <update id="setRoles">
+		update sys_user set ROLE_ID = #{roleIds} where USER_ID =
+		#{userId}
+	</update>
+
+    <select id="getByAccount" resultType="com.wentuo.crab.modular.system.entity.User">
+        select
+         *
+        from sys_user where ACCOUNT = #{account} and is_deleted=0
+    </select>
+
+</mapper>
