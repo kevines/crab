@@ -26,7 +26,6 @@
         <result column="open_id_h5" property="openIdH5"/>
         <result column="open_id_mini" property="openIdMini"/>
         <result column="union_id" property="unionId"/>
-        <result column="is_exam" property="isExam"/>
         <result column="creator" property="creator"/>
         <result column="modifier" property="modifier"/>
         <result column="gmt_created" property="gmtCreated"/>
@@ -38,7 +37,7 @@
     <sql id="Base_Column_List">
         base.id, base.user_id, base.name, base.nick_name, base.real_name, base.sex, base.birthday,
         base.photo, base.wx_photo, base.phone, base.email, base.user_type, base.pwd, base.pay_pwd, base.user_district_code,
-        base.form_id, base.open_id, base.open_id_h5, base.open_id_mini, base.union_id, base.is_exam
+        base.form_id, base.open_id, base.open_id_h5, base.open_id_mini, base.union_id,
         base.creator, base.modifier, base.gmt_created, base.gmt_modified, base.is_deleted
     </sql>
 

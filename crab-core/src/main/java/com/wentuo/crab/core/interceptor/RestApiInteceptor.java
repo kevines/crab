@@ -21,7 +21,7 @@ import com.wentuo.crab.core.common.annotion.AvoidRepeatCommit;
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.constant.RedisKeys;
 import com.wentuo.crab.core.common.exception.BizExceptionEnum;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.util.RedisUtil;
 import com.wentuo.crab.util.HttpContext;
 import io.jsonwebtoken.JwtException;
@@ -77,7 +77,7 @@ public class RestApiInteceptor extends HandlerInterceptorAdapter {
             boolean flag = HttpContext.isTokenExpired();
 
             if (flag) {
-                RenderUtil.renderJson(response, new WTResponse(BizExceptionEnum.TOKEN_ERROR.getCode(), BizExceptionEnum.TOKEN_EXPIRED.getMessage()));
+                RenderUtil.renderJson(response, new WTPageResponse(BizExceptionEnum.TOKEN_ERROR.getCode(), BizExceptionEnum.TOKEN_EXPIRED.getMessage()));
                 return false;
             }
         } catch (JwtException e) {

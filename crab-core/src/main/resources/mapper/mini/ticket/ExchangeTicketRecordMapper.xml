@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketRecord">
+        <id column="id" property="id" />
+        <result column="ticket_no" property="ticketNo" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="mobile" property="mobile" />
+        <result column="logistics_no" property="logisticsNo" />
+        <result column="logistics_name" property="logisticsName" />
+        <result column="address" property="address" />
+        <result column="gmt_created" property="gmtCreated" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        base.id, base.ticket_no, base.user_id, base.user_name, base.mobile, base.logistics_no,
+        base.logistics_name, base.address, base.gmt_created
+    </sql>
+
+</mapper>

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.page.WTPageFactory;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.modular.mini.entity.appuser.AppUserLoginLog;
 import com.wentuo.crab.modular.mini.mapper.appuser.AppUserLoginLogMapper;
 import com.wentuo.crab.util.EntityConvertUtils;
@@ -53,7 +53,7 @@ public class AppUserLoginLogService extends ServiceImpl<AppUserLoginLogMapper, A
         return null;
     }
 
-    public WTResponse findPageBySpec(AppUserLoginLog param){
+    public WTPageResponse findPageBySpec(AppUserLoginLog param){
         Page pageContext = getPageContext();
         QueryWrapper<AppUserLoginLog> objectQueryWrapper = new QueryWrapper<>(param);
         IPage page = this.page(pageContext, objectQueryWrapper);

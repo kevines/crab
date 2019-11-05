@@ -1,6 +1,6 @@
 package com.wentuo.crab.appm.config.web;
 
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +24,7 @@ public class ParamValidAspect {
         if (bindingResult.hasErrors()) {
             String errorInfo = getErrorsSplitNewLine(bindingResult);
             log.info("validateParam进行参数校验出错, 出错信息如下：{}", errorInfo);
-            retVal = WTResponse.error(bindingResult.getFieldError().getDefaultMessage());
+            retVal = WTPageResponse.error(bindingResult.getFieldError().getDefaultMessage());
         } else {
             //执行目标方法
             retVal = pjp.proceed();

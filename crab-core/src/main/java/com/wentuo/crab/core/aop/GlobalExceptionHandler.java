@@ -20,7 +20,7 @@ import cn.stylefeng.roses.core.reqres.response.ErrorResponseData;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.alibaba.fastjson.JSONObject;
 import com.wentuo.crab.core.common.exception.BizExceptionEnum;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.log.LogManager;
 import com.wentuo.crab.core.log.factory.LogTaskFactory;
 import com.wentuo.crab.util.BizException;
@@ -66,12 +66,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public WTResponse bussiness(ServiceException e) {
+    public WTPageResponse bussiness(ServiceException e) {
         LogManager.me().executeLog(LogTaskFactory.exceptionLog(HttpContext.getUserId(), e));
         getRequest().setAttribute("tip", e.getMessage());
         log.error("业务异常:", e);
         sendException2Ding(e);
-        return new WTResponse(e.getCode(), e.getMessage());
+        return new WTPageResponse(e.getCode(), e.getMessage());
     }
 
     /**
@@ -80,11 +80,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BizException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public WTResponse bizException(Exception e) {
+    public WTPageResponse bizException(Exception e) {
         LogManager.me().executeLog(LogTaskFactory.exceptionLog(HttpContext.getUserId(), e));
         log.error("业务异常:", e);
         sendException2Ding(e);
-        return new WTResponse<>(BizExceptionEnum.ERROR.getCode(), e.getMessage());
+        return new WTPageResponse<>(BizExceptionEnum.ERROR.getCode(), e.getMessage());
     }
 
     /**

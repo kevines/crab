@@ -2,7 +2,7 @@ package com.wentuo.crab.modular.mini.service.wechat.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.enums.WechatLoginTypeEnum;
 import com.wentuo.crab.modular.mini.entity.appuser.AppUser;
 import com.wentuo.crab.modular.mini.model.param.appuser.AppUserParam;
@@ -47,14 +47,14 @@ public class WxDecodeServiceImpl implements WxDecodeService {
     private LoginService loginService;
 
     @Override
-    public WTResponse<Map<String, Object>> wxDecode(String code, String iv, String encryptedData) {
+    public WTPageResponse<Map<String, Object>> wxDecode(String code, String iv, String encryptedData) {
         Map<String, Object> map = new HashMap<String, Object>(10);
         // 登录凭证不能为空
         if (code == null || code.length() == 0) {
             map.put("status", 0);
             map.put("errmsg", "code为空");
             map.put("msg", "解密失败");
-            return new WTResponse<>(map);
+            return new WTPageResponse<>(map);
         }
         String session_key = getSessionKey(code);
         String appid = environment.getProperty("pay.weixin.mini.appId");
@@ -92,9 +92,9 @@ public class WxDecodeServiceImpl implements WxDecodeService {
             AppUserWx appUserResult = EntityConvertUtils.convertAToB(appUser, AppUserWx.class);
             logger.warn("小程序登录result(如果为空则失败)" + JSON.toJSONString(appUserResult));
             if (appUserResult == null || StringUtils.isBlank(appUserResult.getUserId())) {
-                return new WTResponse<>(500, "微信小程序登录出现错误", null);
+                return new WTPageResponse<>(500, "微信小程序登录出现错误", null);
             }
-            handelWXPhoto(appUserParam.getPhoto(), appUserResult.getUserId(), appUserResult.getWxPhoto());   //处理微信头像
+            handelWXPhoto(appUserParam.getWxPhoto(), appUserResult.getUserId(), appUserResult.getWxPhoto());   //处理微信头像
             userInfo.put("userId",appUserResult.getUserId());
             userInfo.put("phone", appUserResult.getPhone());
             userInfo.put("amount", appUserResult.getAmount());
@@ -107,12 +107,12 @@ public class WxDecodeServiceImpl implements WxDecodeService {
             appUserResult.setPhoto(userInfo.get("avatarUrl").toString());
             appUserResult.setWxPhoto(userInfo.get("avatarUrl").toString());
             map.put("userInfo", appUserResult);
-            return new WTResponse<>(200, "微信小程序登录成功", map);
+            return new WTPageResponse<>(200, "微信小程序登录成功", map);
         }
         logger.error("解密失败：", JSON.toJSONString(result));
         map.put("status", 0);
         map.put("msg", "解密失败");
-        return new WTResponse<>(map);
+        return new WTPageResponse<>(map);
     }
 
     /**
@@ -125,7 +125,7 @@ public class WxDecodeServiceImpl implements WxDecodeService {
      * @return
      */
     @Override
-    public WTResponse<String> wxDecodePhone(String code, String iv, String encryptedData) {
+    public WTPageResponse<String> wxDecodePhone(String code, String iv, String encryptedData) {
         String userId = HttpContext.getUserId();
         String phone = "";
         boolean flag = false;
@@ -150,9 +150,9 @@ public class WxDecodeServiceImpl implements WxDecodeService {
         map.put("status", flag);   //表示获取成功更新用户绑定的手机号
         logger.info(JSON.toJSONString(result1) + "/" + phone);
         if (StringUtils.isBlank(phone)) {
-            return new WTResponse(WTResponse.FAIL, "获取失败", "");
+            return new WTPageResponse(WTPageResponse.FAIL, "获取失败", "");
         }
-        return new WTResponse(WTResponse.SUCCESS, "获取成功", map);
+        return new WTPageResponse(WTPageResponse.SUCCESS, "获取成功", map);
     }
 
 

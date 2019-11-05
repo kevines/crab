@@ -2,7 +2,7 @@ package com.wentuo.crab.appm.api.mini.wechat;
 
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.wentuo.crab.core.common.annotion.NoPermission;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.modular.mini.service.wechat.WxDecodeService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -44,10 +44,10 @@ public class WxDecodeController extends BaseController{
     @NoPermission
     @ResponseBody
     @RequestMapping(value = "/wxDecode.do", method = RequestMethod.POST)
-    public WTResponse<Map<String,Object>> wxDecode(String code, String iv, String encryptedData) {
+    public WTPageResponse<Map<String,Object>> wxDecode(String code, String iv, String encryptedData) {
         if (StringUtils.isBlank(code)|| StringUtils.isBlank(iv) || StringUtils.isBlank(encryptedData)) {
             LOGGER.error("小程序端传参有误[code:"+code+"/iv:"+iv+"/encryptedData:"+encryptedData+"]");
-            return new WTResponse<>(WTResponse.FAIL, "输入内容为空", null);
+            return new WTPageResponse<>(WTPageResponse.FAIL, "输入内容为空", null);
         }
         return wxDecodeService.wxDecode(code,iv,encryptedData);
     }
@@ -64,7 +64,7 @@ public class WxDecodeController extends BaseController{
     @NoPermission
     @ResponseBody
     @RequestMapping(value = "/wxDecodePhone.do", method = RequestMethod.POST)
-    public WTResponse<String> wxDecodePhone(String code, String iv, String encryptedData) {
+    public WTPageResponse<String> wxDecodePhone(String code, String iv, String encryptedData) {
         return wxDecodeService.wxDecodePhone(code,iv,encryptedData);
     }
 }

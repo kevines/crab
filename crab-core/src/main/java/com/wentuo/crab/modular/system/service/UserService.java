@@ -14,7 +14,7 @@ import com.wentuo.crab.core.common.constant.state.ManagerStatus;
 import com.wentuo.crab.core.common.exception.BizExceptionEnum;
 import com.wentuo.crab.core.common.node.MenuNode;
 import com.wentuo.crab.core.common.page.WTPageFactory;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.shiro.ShiroKit;
 import com.wentuo.crab.core.shiro.ShiroUser;
 import com.wentuo.crab.core.shiro.service.UserAuthService;
@@ -101,7 +101,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @param newPassword
      * @return com.wentuo.bcs.core.common.page.WTResponse
      */
-    public WTResponse changePwd(String oldPassword, String newPassword) {
+    public WTPageResponse changePwd(String oldPassword, String newPassword) {
         Long userId = ShiroKit.getUserNotNull().getId();
         User user = this.getById(userId);
         oldPassword = MD5Util.encrypt(oldPassword);  //原密码
@@ -110,14 +110,14 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             if (!user.getPassword().equals(newPassword)) {
                 user.setPassword(newPassword);
                 if (this.updateById(user)) {
-                    return WTResponse.success("修改密码成功");
+                    return WTPageResponse.success("修改密码成功");
                 }
-                return WTResponse.success("修改密码失败");
+                return WTPageResponse.success("修改密码失败");
             } else {
-                return WTResponse.error("原密码与新密码不能相同");
+                return WTPageResponse.error("原密码与新密码不能相同");
             }
         }
-        return WTResponse.error("原密码填写不对");
+        return WTPageResponse.error("原密码填写不对");
     }
 
     /**
@@ -144,7 +144,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @param user
      * @return
      */
-    public WTResponse selectUsers(User user) {
+    public WTPageResponse selectUsers(User user) {
         Page pageContext = WTPageFactory.defaultPage();
         QueryWrapper<User> objectQueryWrapper = new QueryWrapper<>();
         if(StringUtil.isNotEmpty(user.getRoleName())){

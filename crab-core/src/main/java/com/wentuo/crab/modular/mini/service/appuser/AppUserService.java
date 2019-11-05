@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.page.WTPageFactory;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.util.RedisUtil;
 import com.wentuo.crab.enums.SexTypeEnum;
 import com.wentuo.crab.enums.WechatLoginTypeEnum;
@@ -77,7 +77,7 @@ public class AppUserService extends ServiceImpl<AppUserMapper, AppUser> {
      * @param userId
      * @return
      */
-    public WTResponse<Boolean> update(AppUserParam param, String userId) {
+    public WTPageResponse<Boolean> update(AppUserParam param, String userId) {
         UpdateWrapper<AppUser> updateWrapper = new UpdateWrapper<>();
         if (StringUtil.isNotEmpty(userId)) {
             updateWrapper.lambda().eq(AppUser::getUserId, param.getUserId());
@@ -86,9 +86,9 @@ public class AppUserService extends ServiceImpl<AppUserMapper, AppUser> {
         appUser = this.getAppuser(appUser, param);
         int result = this.baseMapper.update(appUser, updateWrapper);
         if (result == 1) {
-            return new WTResponse<>(WTResponse.SUCCESS, "更新成功", Boolean.TRUE);
+            return new WTPageResponse<>(WTPageResponse.SUCCESS, "更新成功", Boolean.TRUE);
         } else {
-            return new WTResponse<>(WTResponse.FAIL, "更新失败", Boolean.FALSE);
+            return new WTPageResponse<>(WTPageResponse.FAIL, "更新失败", Boolean.FALSE);
         }
     }
 
@@ -140,7 +140,7 @@ public class AppUserService extends ServiceImpl<AppUserMapper, AppUser> {
      * @param param
      * @return com.wentuo.bcs.core.common.page.WTResponse
      */
-    public WTResponse findPageBySpec(AppUserParam param) {
+    public WTPageResponse findPageBySpec(AppUserParam param) {
         Page pageContext = getPageContext();
         QueryWrapper<AppUser> queryWrapper = new QueryWrapper<>();
         if (StringUtil.isNotEmpty(param.getUserId())) {

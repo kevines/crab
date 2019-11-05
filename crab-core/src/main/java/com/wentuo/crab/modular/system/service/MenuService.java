@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.exception.BizExceptionEnum;
 import com.wentuo.crab.core.common.node.MenuNode;
 import com.wentuo.crab.core.common.node.ZTreeNode;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.listener.ConfigListener;
 import com.wentuo.crab.core.util.RedisUtil;
 import com.wentuo.crab.enums.ServiceKeyTypeEnum;
@@ -232,7 +232,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
         return this.baseMapper.selectList(menuQueryWrapper);
     }
 
-    public WTResponse editMenuTreeListByRoleId(List<String> menuIds, Long roleId) {
+    public WTPageResponse editMenuTreeListByRoleId(List<String> menuIds, Long roleId) {
         //先删除后新增角色
         relationService.deleteByRole(roleId);
         Relation relation;
@@ -242,6 +242,6 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
             relation.setMenuId(Long.valueOf(menuId));
             relationService.save(relation);
         }
-        return WTResponse.success();
+        return WTPageResponse.success();
     }
 }

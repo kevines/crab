@@ -1,6 +1,6 @@
 package com.wentuo.crab.modular.mini.service.wechat;
 
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public interface WxDecodeService {
      * @param encryptedData
      * @return com.wentuo.bcs.core.common.page.WTResponse<java.util.Map<java.lang.String,java.lang.Object>>
      */
-    WTResponse<Map<String, Object>> wxDecode(String code, String iv, String encryptedData);
+    WTPageResponse<Map<String, Object>> wxDecode(String code, String iv, String encryptedData);
 
     /**
      * 功能描述: 微信小程序授权手机号码
@@ -31,5 +31,5 @@ public interface WxDecodeService {
      * @param encryptedData
      * @return com.wentuo.bcs.core.common.page.WTResponse<java.lang.String>
      */
-    WTResponse<String> wxDecodePhone(String code, String iv, String encryptedData);
+    WTPageResponse<String> wxDecodePhone(String code, String iv, String encryptedData);
 }

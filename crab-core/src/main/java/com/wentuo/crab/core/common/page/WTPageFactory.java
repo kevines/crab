@@ -66,8 +66,8 @@ public class WTPageFactory {
      * @author fengshuonan
      * @Date 2019/1/25 22:14
      */
-    public static WTResponse createPageInfo(IPage page) {
-        WTResponse result = new WTResponse();
+    public static WTPageResponse createPageInfo(IPage page) {
+        WTPageResponse result = new WTPageResponse();
         result.setCount(page.getTotal());
         result.setData(page.getRecords());
         if(page.getRecords() == null){
@@ -79,8 +79,8 @@ public class WTPageFactory {
     /**
      * 创建layui能识别的分页响应参数 ext增加拓展
      */
-    public static WTResponse createPageInfoWithExt(IPage page, Object ext) {
-        WTResponse result = new WTResponse();
+    public static WTPageResponse createPageInfoWithExt(IPage page, Object ext) {
+        WTPageResponse result = new WTPageResponse();
         result.setCount(page.getTotal());
         result.setData(page.getRecords());
         result.setExt(ext);
@@ -94,8 +94,8 @@ public class WTPageFactory {
      * @author fengshuonan
      * @Date 2019/1/25 22:14
      */
-    public static <T> WTResponse createPageByList(List<T> list, long total) {
-        WTResponse result = new WTResponse();
+    public static <T> WTPageResponse createPageByList(List<T> list, long total) {
+        WTPageResponse result = new WTPageResponse();
         result.setCount(total);
         result.setData(list);
         return result;

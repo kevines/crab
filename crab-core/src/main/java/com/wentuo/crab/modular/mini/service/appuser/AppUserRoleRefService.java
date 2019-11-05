@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.page.WTPageFactory;
-import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.enums.RoleEnum;
 import com.wentuo.crab.modular.mini.entity.appuser.AppUserRoleRef;
 import com.wentuo.crab.modular.mini.mapper.appuser.AppUserRoleRefMapper;
@@ -71,7 +71,7 @@ public class AppUserRoleRefService extends ServiceImpl<AppUserRoleRefMapper, App
         return appUserRoleRefs;
     }
 
-    public WTResponse findPageBySpec(AppUserRoleRefParam param) {
+    public WTPageResponse findPageBySpec(AppUserRoleRefParam param) {
         Page pageContext = getPageContext();
         QueryWrapper<AppUserRoleRef> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);

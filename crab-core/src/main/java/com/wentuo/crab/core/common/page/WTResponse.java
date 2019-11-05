@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.wentuo.crab.core.common.exception.BizExceptionEnum;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,49 +19,35 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 
 /**
- * 分页结果的封装(for Layui Table)
+ * 功能描述：接口数据响应返回结果封装
  *
- * @author fengshuonan
- * @Date 2019年1月25日22:07:36
+ * @author wangbencheng
+ * @version 1.0.0
+ * @claaName WTResponse
+ * @since 2019/10/28 11:28
  */
 public class WTResponse<T> implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(WTResponse.class);
 
-    private static final long serialVersionUID = 2757435524710287976L;
-
+    /**
+     * 返回请求的状态码
+     */
     public static final Integer SUCCESS = 200;
-    public static final Integer FAIL = 500;
-    public static final Integer NULLERROR = 400;
-    protected static WTResponse SUCCESS_TIP = new WTResponse("请求成功");
-
+    public static final Integer ERROR = 500;
+    public static final Integer NULL = 400;
+    public static final Integer NOPERMISSION = 403;
+    public static final Integer EXPIRSE = 302;
+    public static final Integer NULLRESULT = 204;   //空结果返回状态码
 
     private Integer code = 200;
     private String message = "操作成功";
     private T data;
-    private Integer count = 0;
-    // 扩展信息
-    private Object ext;
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = Math.toIntExact(count);
-    }
-
-    public WTResponse() {
-    }
-
-    public boolean isSuccess() {
-        return this.getCode().equals(SUCCESS);
-    }
-
-    public WTResponse(Integer code, Integer count, T data) {
+    public WTResponse() {}
+    public WTResponse(Integer code, T data) {
         this.code = code;
         this.data = data;
-        this.count = count;
     }
 
     public WTResponse(Integer errCode, String errorMessage) {
@@ -74,58 +61,104 @@ public class WTResponse<T> implements Serializable {
         this.data = data;
     }
 
-    public WTResponse(Integer code, String message, T data, Object ext) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-        this.ext = ext;
-    }
-
-    public WTResponse(Integer code, String message, T data, Object ext, Integer count) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-        this.count = count;
-        this.ext = ext;
-    }
-
     public WTResponse(T data) {
         this.code = SUCCESS;
         this.data = data;
-        this.message = "成功";
+        this.message = "操作成功";
+    }
+
+    public WTResponse(String message) {
+        this.code = SUCCESS;
+        this.message = message;
     }
 
     public static WTResponse success() {
         return new WTResponse();
     }
 
+    /**
+     * 返回成功的状态码
+     * @param data
+     * @return
+     */
     public static WTResponse success(Object data) {
         return new WTResponse(data);
     }
 
+    /**
+     * 返回成功的状态码
+     * @param message
+     * @return
+     */
+    public static WTResponse success(String message) {
+        return new WTResponse(message);
+    }
+
+    /**
+     * 返回成功的状态码
+     * @param message
+     * @param data
+     * @return
+     */
     public static WTResponse success(String message, Object data) {
         return new WTResponse(WTResponse.SUCCESS, message, data);
     }
 
-    public static WTResponse success(String message, Object data, Integer count) {
-        return new WTResponse(WTResponse.SUCCESS, message, data, null, count);
-    }
-
+    /**
+     * 服务报错5xx
+     * @param message
+     * @return
+     */
     public static WTResponse error(String message) {
         return new WTResponse(BizExceptionEnum.ERROR.getCode(), message);
     }
 
+    /**
+     * 服务报错5xx
+     * @param message
+     * @param data
+     * @return
+     */
     public static WTResponse error(String message, Object data) {
         return new WTResponse(BizExceptionEnum.ERROR.getCode(), message, data);
     }
 
-
+    /**
+     * 空指针造成的查询到的空记录返回码
+     * @param message
+     * @return
+     */
     public static WTResponse nullError(String message) {
-        return new WTResponse(BizExceptionEnum.PARAM_ERROR.getCode(), message);
+        return new WTResponse(WTResponse.NULL, message);
     }
 
+    /**
+     * 空指针造成的查询到的空记录返回码及数据
+     * @param message
+     * @param data
+     * @return
+     */
     public static WTResponse nullError(String message, Object data) {
-        return new WTResponse(BizExceptionEnum.PARAM_ERROR.getCode(), message, data);
+        return new WTResponse(WTResponse.NULL, message, data);
+    }
+
+    /**
+     * 空记录返回状态码及返回文字提示内容
+     * @param message
+     * @return
+     */
+    public static WTResponse nullResult(String message) {
+        return new WTResponse(WTResponse.NULLRESULT, message);
+    }
+
+    /**
+     * 空记录返回状态码及返回文字提示内容和数据
+     * @param message
+     * @param data
+     * @return
+     */
+    public static WTResponse nullResult(String message, Object data) {
+        return new WTResponse(WTResponse.NULLRESULT, message, data);
     }
 
     public static void writeResponse(Object T) {
@@ -196,16 +229,5 @@ public class WTResponse<T> implements Serializable {
         this.data = data;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Object getExt() {
-        return ext;
-    }
-
-    public void setExt(Object ext) {
-        this.ext = ext;
-    }
 
 }
