@@ -15,6 +15,7 @@ import com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketSpecificationMap
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketParam;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketSpecificationResult;
+import com.wentuo.crab.util.CodeUtil;
 import com.wentuo.crab.util.EntityConvertUtils;
 import com.wentuo.crab.util.StringUtil;
 import org.springframework.stereotype.Service;
@@ -68,8 +69,7 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
         if (StringUtil.isNotEmpty(specificationId)) {
             ExchangeTicketSpecification exchangeTicketSpecification = this.findBySpecificationId(specificationId);
             Integer number = param.getStock();  //生成兑换券数量
-            String timeStamp = RedisUtil.getServiceKeyHaveDateByType("");
-            long exchangeCode = Long.parseLong(timeStamp);
+            List<ExchangeTicket> exchangeTicketList = this.exchangeTicketService.list();
             for (int i = 0; i < number; i ++) {  //批量生产此规格蟹券
                 ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
                 exchangeTicketParam.setIsSend(false);
@@ -77,11 +77,34 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
                 if (exchangeTicketSpecification != null) {
                     exchangeTicketParam.setSpecificationId(exchangeTicketSpecification.getId());
                 }
-                exchangeTicketParam.setTicketNo(Long.toString(exchangeCode + i));
+                exchangeTicketParam = this.judgeExchangeCodeIsRepeat(exchangeTicketParam, exchangeTicketList, i);
                 this.exchangeTicketService.add(exchangeTicketParam);
             }
         }
         return WTResponse.success();
+    }
+
+    /**
+     * 判断生成的随机兑换码是否重复
+     * @param exchangeTicketList
+     * @return
+     */
+    private ExchangeTicketParam judgeExchangeCodeIsRepeat(ExchangeTicketParam exchangeTicketParam, List<ExchangeTicket> exchangeTicketList, Integer index) {
+        //生成兑换券码
+        String exchangeCode = CodeUtil.toSerialCode(index, 10);
+        boolean flag = true;
+        for (ExchangeTicket exchangeTicket: exchangeTicketList) {
+            if (exchangeCode.equals(exchangeTicket.getTicketNo())) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            exchangeTicketParam.setTicketNo(exchangeCode);
+            return exchangeTicketParam;
+        } else {
+            return this.judgeExchangeCodeIsRepeat(exchangeTicketParam, exchangeTicketList, index);
+        }
     }
 
     /**
