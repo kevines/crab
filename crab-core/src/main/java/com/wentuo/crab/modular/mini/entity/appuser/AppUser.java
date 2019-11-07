@@ -134,11 +134,6 @@ public class AppUser implements Serializable {
     private String unionId;
 
     /**
-     * 是否有考试权限
-     */
-    private Boolean isExam;
-
-    /**
      * 创建时间
      */
     public Date gmtCreated;
@@ -195,7 +190,6 @@ public class AppUser implements Serializable {
                 ", openIdH5=" + openIdH5 +
                 ", openIdMini=" + openIdMini +
                 ", unionId=" + unionId +
-                ", is_exam=" + isExam +
                 ", creator=" + creator +
                 ", modifier=" + modifier +
                 ", gmtCreated=" + gmtCreated +

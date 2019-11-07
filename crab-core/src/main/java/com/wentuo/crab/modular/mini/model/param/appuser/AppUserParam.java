@@ -132,11 +132,6 @@ public class AppUserParam implements Serializable, BaseValidatingParam {
     private String unionId;
 
     /**
-     * 是否有考试权限
-     */
-    private Boolean isExam;
-
-    /**
      * 创建时间
      */
     private Date gmtCreated;

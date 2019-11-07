@@ -385,9 +385,6 @@ public class AppUserService extends ServiceImpl<AppUserMapper, AppUser> {
         if (StringUtil.isNotEmpty(param.getUnionId())) {
             queryWrapper.lambda().eq(AppUser::getUnionId, param.getUnionId());
         }
-        if (param.getIsExam() != null) {
-            queryWrapper.lambda().eq(AppUser::getIsExam, param.getIsExam());
-        }
         if (param.getGmtCreated() != null) {
             queryWrapper.lambda().eq(AppUser::getGmtCreated, param.getGmtCreated());
         }
@@ -451,9 +448,6 @@ public class AppUserService extends ServiceImpl<AppUserMapper, AppUser> {
         }
         if (StringUtil.isNotEmpty(param.getUnionId())) {
             appUser.setUnionId(param.getUnionId());
-        }
-        if (param.getIsExam() != null) {
-            appUser.setIsExam(param.getIsExam());
         }
         if (param.getGmtModified() != null) {
             appUser.setGmtModified(param.getGmtModified());

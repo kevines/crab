@@ -125,11 +125,6 @@ public class AppUserResult implements Serializable {
      * unionId
      */
     private String unionId;
-
-    /**
-     * 是否有考试权限
-     */
-    private Boolean isExam;
     
     /**
      * 登录类型
