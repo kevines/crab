@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -128,11 +131,15 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
      * 更新兑换券规格记录
      * @param param
      */
-    public void update(ExchangeTicketSpecificationParam param){
+    public WTResponse update(ExchangeTicketSpecificationParam param){
         ExchangeTicketSpecification oldEntity = getOldEntity(param);
         ExchangeTicketSpecification newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
-        this.updateById(newEntity);
+        boolean flag = this.updateById(newEntity);
+        if (!flag) {
+            return WTResponse.error("更新失败");
+        }
+        return WTResponse.success("更新成功");
     }
 
     /**
@@ -157,6 +164,22 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
         return result;
     }
 
+    /**
+     * 查询兑换券名称下拉列表
+     * @return
+     */
+    public WTResponse findSelectList() {
+        List list = new ArrayList();
+        ExchangeTicketSpecificationParam exchangeTicketSpecificationParam = new ExchangeTicketSpecificationParam();
+        List<ExchangeTicketSpecificationResult> ticketSpecificationList = this.findListBySpec(exchangeTicketSpecificationParam);
+        ticketSpecificationList.forEach(exchangeTicketSpecificationResult -> {
+            Map map = new HashMap();
+            map.put("code", exchangeTicketSpecificationResult.getId());
+            map.put("name", exchangeTicketSpecificationResult.getTicketName());
+            list.add(map);
+        });
+        return WTResponse.success(list);
+    }
     /**
      * 查询兑换券列表信息
      * @param param

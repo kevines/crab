@@ -29,8 +29,6 @@ public class ExchangeTicketController extends BaseController {
     private ExchangeTicketService exchangeTicketService;
 
 
-
-
     /**
      * 删除蟹券
      * @author wangbencheng
@@ -47,7 +45,8 @@ public class ExchangeTicketController extends BaseController {
      * @author wangbencheng
      * @Date 2019-10-31
      */
-    @PostMapping("/detail.do")
+    @RequestMapping("/detail.do")
+    @NoPermission
     public WTResponse detail(ExchangeTicketParam exchangeTicketParam) {
         ExchangeTicketResult detail = this.exchangeTicketService.findBySpec(exchangeTicketParam);
         return WTResponse.success(detail);

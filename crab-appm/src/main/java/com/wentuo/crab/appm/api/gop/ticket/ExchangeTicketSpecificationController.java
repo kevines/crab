@@ -5,12 +5,13 @@ import javax.annotation.Resource;
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.common.page.WTResponse;
-import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.service.ticket.ExchangeTicketSpecificationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 
 /**
@@ -39,6 +40,11 @@ public class ExchangeTicketSpecificationController extends BaseController {
     }
 
 
+    @PostMapping("/edit.do")
+    @NoPermission
+    public WTResponse editTicketSpecification(ExchangeTicketSpecificationParam param) {
+        return this.exchangeTicketSpecificationService.update(param);
+    }
 
     /**
      * 批量删除蟹券
@@ -52,6 +58,19 @@ public class ExchangeTicketSpecificationController extends BaseController {
         return WTResponse.success();
     }
 
+    /**
+     * 查询
+     * @return
+     */
+    @RequestMapping("/select/list.do")
+    public WTResponse queryTicketSpecificationNameList() {
+        return this.exchangeTicketSpecificationService.findSelectList();
+    }
+
+    @RequestMapping("/page/list.do")
+    public WTPageResponse findPageList(ExchangeTicketSpecificationParam param) {
+        return this.exchangeTicketSpecificationService.findPageBySpec(param);
+    }
 }
 
 

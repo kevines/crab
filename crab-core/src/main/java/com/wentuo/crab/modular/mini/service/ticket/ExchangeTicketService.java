@@ -241,8 +241,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      */
     public ExchangeTicketResult findBySpec(ExchangeTicketParam param) {
         ExchangeTicket exchangeTicket = this.getById(param.getId());
-        ExchangeTicketResult exchangeTicketResult = EntityConvertUtils.convertAToB(exchangeTicket, ExchangeTicketResult.class);
-        return exchangeTicketResult;
+        return this.setObjectProperty(exchangeTicket);
     }
 
     /**
@@ -255,7 +254,10 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         ExchangeTicket entity = getEntity(param);
         QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>(entity);
         List<ExchangeTicket> exchangeTicketList = this.baseMapper.selectList(queryWrapper);
-        List<ExchangeTicketResult> exchangeTicketResultList = EntityConvertUtils.convertAListToBList(exchangeTicketList, ExchangeTicketResult.class);
+        List<ExchangeTicketResult> exchangeTicketResultList = new ArrayList<>();
+        for (ExchangeTicket exchangeTicket: exchangeTicketList) {
+            exchangeTicketResultList.add(this.setObjectProperty(exchangeTicket));
+        }
         return exchangeTicketResultList;
     }
 
@@ -319,6 +321,8 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         exchangeTicketResult.setGoodNum(exchangeTicketSpecification.getGoodNum());
         exchangeTicketResult.setGoodPic(exchangeTicketSpecification.getGoodPic());
         exchangeTicketResult.setSpecification(exchangeTicketSpecification.getSpecification());
+        exchangeTicketResult.setGmtCreated(exchangeTicketSpecification.getGmtCreated());
+        exchangeTicketResult.setExpiryDate(exchangeTicketSpecification.getExpiryDate());
         return exchangeTicketResult;
     }
 

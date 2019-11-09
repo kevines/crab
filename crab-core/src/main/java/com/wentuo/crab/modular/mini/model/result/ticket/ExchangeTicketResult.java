@@ -79,4 +79,14 @@ public class ExchangeTicketResult implements Serializable {
      */
     private Date sendDate;
 
+    /**
+     * 兑换券创建日期
+     */
+    private Date gmtCreated;
+
+    /**
+     * 兑换券截止日期
+     */
+    private Date expiryDate;
+
 }
