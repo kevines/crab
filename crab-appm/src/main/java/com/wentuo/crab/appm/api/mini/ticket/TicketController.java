@@ -3,6 +3,8 @@ package com.wentuo.crab.appm.api.mini.ticket;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketRecord;
+import com.wentuo.crab.modular.mini.service.ticket.ExchangeTicketRecordService;
 import com.wentuo.crab.modular.mini.service.ticket.ExchangeTicketService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ public class TicketController extends BaseController {
 
     @Resource
     private ExchangeTicketService exchangeTicketService;
+
+    @Resource
+    private ExchangeTicketRecordService exchangeTicketRecordService;
 
 
     /**
@@ -52,14 +57,27 @@ public class TicketController extends BaseController {
     }
 
     /**
-     * 我的蟹券
-     * @param userId
+     * 我的蟹券列表
+     * @param userId 用户编号
      * @return
      */
-    @RequestMapping("/ticket/detail.do")
+    @RequestMapping("/my/crab/list.do")
     @NoPermission
     public WTResponse queryTicketByUserId(String userId) {
         return this.exchangeTicketService.queryTicketByUserId(userId);
+    }
+
+    /**
+     * 查询我的蟹券列表中兑换券详情
+     * @param ticketNo
+     * @return
+     */
+    @RequestMapping("/my/crab/detail" +
+            "" +
+            ".do")
+    @NoPermission
+    public WTResponse queryTicketExchangeDetail(String ticketNo) {
+        return WTResponse.success(this.exchangeTicketRecordService.findDetailByTicketNo(ticketNo));
     }
 
 }

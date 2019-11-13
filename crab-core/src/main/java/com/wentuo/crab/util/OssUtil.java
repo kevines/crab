@@ -27,10 +27,10 @@ public class OssUtil {
 
     // OOS地址 Endpoint以杭州为例，其它Region请按实际情况填写
     private static final String endpoint = "https://oss-cn-hangzhou.aliyuncs.com";
-    private static final String accessKeyId = "LTAI4FiS5EnTeP5Qei138tS4";
-    private static final String accessKeySecret = "wAoF3oDeR7jOqnKeSoSFL6zFUfpkuN";
-    private static final String domain = "https://daikin-mini.oss-cn-hangzhou.aliyuncs.com/";
-    private static final String bucketName = "daikin-mini";
+    private static final String accessKeyId = "LTAIeXH1M4yawgwU";
+    private static final String accessKeySecret = "6Fts5LFF9bTLbhTb6FWKlyds44p7jw";
+    private static final String domain = "https://wt-home.oss-cn-hangzhou.aliyuncs.com/";
+    private static final String bucketName = "wt-home";
 
 
     /**

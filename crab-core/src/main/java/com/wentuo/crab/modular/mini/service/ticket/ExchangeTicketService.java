@@ -16,6 +16,7 @@ import com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketMapper;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketParam;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketRecordParam;
 import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketResult;
+import com.wentuo.crab.util.DateUtils;
 import com.wentuo.crab.util.EntityConvertUtils;
 import com.wentuo.crab.util.StringUtil;
 import org.springframework.stereotype.Service;
@@ -94,6 +95,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      */
     public WTResponse exchangeTicket(String userId, String ticketNo, String userName, String mobile, String address) {
         if (StringUtil.isNotEmpty(ticketNo)) {  //判断兑换券号是否为空
+            ticketNo = ticketNo.toUpperCase();
             //查询兑换券号是否存在
             QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(ExchangeTicket::getTicketNo, ticketNo);
@@ -103,6 +105,11 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             }
             if (exchangeTicket.getIsExchange()) {
                 return WTResponse.error("该蟹券已经兑换，无法重复进行兑换操作");
+            }
+            ExchangeTicketSpecification exchangeTicketSpecification = this.exchangeTicketSpecificationService.getById(exchangeTicket.getSpecificationId());
+            int dateResult = DateUtils.compareTimes(exchangeTicketSpecification.getExpiryDate(), new Date());
+            if (dateResult != 1) {
+                return WTResponse.error("已超过兑换截止日期，无法den进行兑换操作");
             }
             //查询得到记录,更新兑换券兑换状态
             ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
@@ -154,7 +161,14 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ExchangeTicketRecord::getUserId, userId);
         List<ExchangeTicketRecord> list = this.exchangeTicketRecordService.getBaseMapper().selectList(queryWrapper);
-        return WTResponse.success(list);
+        List<ExchangeTicketResult> resultList = new ArrayList<>();
+        list.forEach(exchangeTicketRecord -> {
+            String ticketNo = exchangeTicketRecord.getTicketNo();
+            ExchangeTicket exchangeTicket = this.findByTicketNo(ticketNo);
+            ExchangeTicketResult exchangeTicketResult = this.setObjectProperty(exchangeTicket);
+            resultList.add(exchangeTicketResult);
+        });
+        return WTResponse.success(resultList);
     }
     /**
      * pc端发货操作
@@ -231,6 +245,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      * @return
      */
     public ExchangeTicket findByTicketNo(String ticketNo) {
+        ticketNo = ticketNo.toUpperCase();
         QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ExchangeTicket::getTicketNo, ticketNo);
         return this.baseMapper.selectOne(queryWrapper);
@@ -242,6 +257,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      * @return
      */
     public ExchangeTicketResult findResultByTicketNo(String ticketNo) {
+        ticketNo = ticketNo.toUpperCase();
         ExchangeTicket exchangeTicket = this.findByTicketNo(ticketNo);
         return this.setObjectProperty(exchangeTicket);
     }
@@ -256,6 +272,17 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         return this.setObjectProperty(exchangeTicket);
     }
 
+
+    /**
+     * 通过兑换码属性编号查询兑换券列表信息
+     * @param specificationId
+     * @return
+     */
+    public List<ExchangeTicket> findListBySpecificationId(Long specificationId) {
+        QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExchangeTicket::getSpecificationId, specificationId);
+        return this.baseMapper.selectList(queryWrapper);
+    }
     /**
      * 查询兑换券列表信息
      *

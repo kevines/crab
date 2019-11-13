@@ -43,8 +43,8 @@ pay:
     #小程序部分属性配置
     mini:
       notifyUrl: https://api.ihouxiang.com/wx/weixinMiniPayNotify.do   #支付的回调通知地址
-      appId: wx96a801646d2877f3    #大金防水学院小程序appID
-      appSecret: 3779c6d9b666f1533596f519b6d79fbf #大金防水学院小程序scecretId
+      appId: wx14922260c9a70bbe    #小程序appID
+      appSecret: 16704285e229096c263298dfd0589e02 #scecretId
       mchID: 1543074991   #商家服务号
       key: 2716577de692730277a4b074372e65d0
       certPath: /home/houji/cert/apiclient_cert.p12 #E:/software/weixinPay/WXCertUtil/cert/apiclient_cert.p12

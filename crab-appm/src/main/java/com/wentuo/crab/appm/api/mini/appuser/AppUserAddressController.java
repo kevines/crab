@@ -37,10 +37,19 @@ public class AppUserAddressController extends BaseController {
     @PostMapping("/add.do")
     @NoPermission
     public WTResponse addItem(AppUserAddressParam appUserAddressParam) {
-        this.appUserAddressService.add(appUserAddressParam);
-        return WTResponse.success();
+        return this.appUserAddressService.add(appUserAddressParam);
     }
 
+    /**
+     * 编辑用户地址信息
+     * @param param
+     * @return
+     */
+    @PostMapping("/edit.do")
+    @NoPermission
+    public WTResponse editAddress(AppUserAddressParam param) {
+        return this.appUserAddressService.update(param);
+    }
     /**
      * 删除收获地址
      *
@@ -50,8 +59,7 @@ public class AppUserAddressController extends BaseController {
     @PostMapping("/delete.do")
     @NoPermission
     public WTResponse delete(AppUserAddressParam appUserAddressParam) {
-        this.appUserAddressService.delete(appUserAddressParam);
-        return WTResponse.success();
+        return this.appUserAddressService.delete(appUserAddressParam);
     }
 
     /**
@@ -72,7 +80,7 @@ public class AppUserAddressController extends BaseController {
      * @author wangbencheng
      * @Date 2019-10-31
      */
-    @PostMapping("/list.do")
+    @RequestMapping("/list.do")
     @NoPermission
     public WTResponse list(AppUserAddressParam appUserAddressParam) {
         return WTResponse.success(this.appUserAddressService.findListBySpec(appUserAddressParam));

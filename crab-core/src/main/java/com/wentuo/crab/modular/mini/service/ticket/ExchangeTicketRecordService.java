@@ -96,6 +96,16 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
     }
 
     /**
+     * 通过兑换码查询兑换记录详情
+     * @param ticketNo
+     * @return
+     */
+    public ExchangeTicketRecordResult findDetailByTicketNo(String ticketNo) {
+        ExchangeTicketRecord exchangeTicketRecord = this.findByTicketNo(ticketNo);
+        return this.setObjectResult(exchangeTicketRecord);
+    }
+
+    /**
      * 查询兑换券记录列表
      * @param param
      * @return

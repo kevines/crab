@@ -1,15 +1,14 @@
 package com.wentuo.crab.appm.api.gop.ticket;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.common.page.WTResponse;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.service.ticket.ExchangeTicketSpecificationService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -72,10 +71,29 @@ public class ExchangeTicketSpecificationController extends BaseController {
         return this.exchangeTicketSpecificationService.findSelectList();
     }
 
+    /**
+     * 分页查询兑换券属性列表
+     * @param param
+     * @return
+     */
     @RequestMapping("/page/list.do")
     public WTPageResponse findPageList(ExchangeTicketSpecificationParam param) {
         return this.exchangeTicketSpecificationService.findPageBySpec(param);
     }
+
+    /**
+     * 导出Excel
+     * @param response
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="/export/excel.do", method = RequestMethod.GET)
+    @ResponseBody
+    @NoPermission
+    public WTResponse exportExcel(HttpServletResponse response, Long id) {
+        return this.exchangeTicketSpecificationService.exportExcel(response, id);
+    }
+
 }
 
 

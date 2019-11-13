@@ -12,15 +12,18 @@ import com.wentuo.crab.core.util.RedisUtil;
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicket;
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketSpecificationMapper;
+import com.wentuo.crab.modular.mini.model.excel.ticket.TicketExcelModel;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketParam;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketSpecificationResult;
 import com.wentuo.crab.util.CodeUtil;
 import com.wentuo.crab.util.EntityConvertUtils;
 import com.wentuo.crab.util.StringUtil;
+import com.wentuo.crab.util.excel.ExcelUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +104,7 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
      */
     private ExchangeTicketParam judgeExchangeCodeIsRepeat(ExchangeTicketParam exchangeTicketParam, List<ExchangeTicket> exchangeTicketList, Integer index) {
         //生成兑换券码
-        String exchangeCode = CodeUtil.toSerialCode(index, 10);
+        String exchangeCode = CodeUtil.toSerialCode(index, 10).toUpperCase();
         boolean flag = true;
         for (ExchangeTicket exchangeTicket: exchangeTicketList) {
             if (exchangeCode.equals(exchangeTicket.getTicketNo())) {
@@ -115,6 +118,51 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
         } else {
             return this.judgeExchangeCodeIsRepeat(exchangeTicketParam, exchangeTicketList, index);
         }
+    }
+
+    /**
+     * 导出兑换券Excel
+     * @param response
+     * @param id
+     * @return
+     */
+    public WTResponse exportExcel(HttpServletResponse response, Long id) {
+        try {
+            List<TicketExcelModel> list = this.findTicketModelList(id);
+            String ticketNam = "";
+            if (list.size() != 0) {
+                ticketNam = list.get(0).getTicketName();
+            }
+            if (StringUtil.isNotEmpty(ticketNam)) {
+                ExcelUtil.writeExcel(response, list, ticketNam + "-兑换码列表", new TicketExcelModel());
+            } else {
+                ExcelUtil.writeExcel(response, list, "蟹券兑换码列表", new TicketExcelModel());
+            }
+
+            return new WTResponse(WTResponse.SUCCESS, "导出成功", true);
+        }catch (Exception e) {
+            return new WTResponse(WTResponse.ERROR, "导出失败", false);
+        }
+    }
+
+    /**
+     * 查询导出Excel表格所需的蟹券兑换码数据格式
+     * @param id
+     * @return
+     */
+    private List<TicketExcelModel> findTicketModelList(Long id) {
+        ExchangeTicketSpecification exchangeTicketSpecification = this.getById(id);
+        List<TicketExcelModel> list = new ArrayList<>();
+        if (exchangeTicketSpecification != null) {
+            List<ExchangeTicket> ticketList = this.exchangeTicketService.findListBySpecificationId(exchangeTicketSpecification.getId());
+            ticketList.forEach(exchangeTicket -> {
+                TicketExcelModel ticketExcelModel = new TicketExcelModel();
+                ticketExcelModel.setTicketName(exchangeTicketSpecification.getTicketName());
+                ticketExcelModel.setTicketNo(exchangeTicket.getTicketNo());
+                list.add(ticketExcelModel);
+            });
+        }
+        return list;
     }
 
     /**
