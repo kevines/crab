@@ -87,11 +87,12 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      *
      * @param userId   用户编号
      * @param ticketNo 兑换券号
+     * @param userName 用户姓名
      * @param mobile   联系方式
      * @param address  收货地址信息
      * @return
      */
-    public WTResponse exchangeTicket(String userId, String ticketNo, String mobile, String address) {
+    public WTResponse exchangeTicket(String userId, String ticketNo, String userName, String mobile, String address) {
         if (StringUtil.isNotEmpty(ticketNo)) {  //判断兑换券号是否为空
             //查询兑换券号是否存在
             QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
@@ -116,6 +117,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             ExchangeTicketRecordParam exchangeTicketRecordParam = new ExchangeTicketRecordParam();
             exchangeTicketRecordParam.setAddress(address);
             exchangeTicketRecordParam.setMobile(mobile);
+            exchangeTicketRecordParam.setUserName(userName);
             exchangeTicketRecordParam.setUserId(userId);
             exchangeTicketRecordParam.setTicketNo(ticketNo);
             this.exchangeTicketRecordService.add(exchangeTicketRecordParam);
@@ -204,6 +206,16 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         if (exchangeTicket == null) {
             return WTResponse.nullResult("未查询到该兑换券记录信息");
         }
+        //将交易记录中的快递信息和快递单号置空
+        ExchangeTicketRecord exchangeTicketRecord = this.exchangeTicketRecordService.findByTicketNo(ticketNo);
+        if (exchangeTicketRecord == null) {
+            return WTResponse.nullResult("未查询到该兑换券记录信息");
+        }
+        ExchangeTicketRecordParam exchangeTicketRecordParam = new ExchangeTicketRecordParam();
+        exchangeTicketRecordParam.setId(exchangeTicketRecord.getId());
+        exchangeTicketRecordParam.setLogisticsName(null);
+        exchangeTicketRecordParam.setLogisticsNo(null);
+        this.exchangeTicketRecordService.update(exchangeTicketRecordParam);
         //将兑换券状态变更为未发货状态
         ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
         exchangeTicketParam.setId(exchangeTicket.getId());

@@ -45,6 +45,13 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
      * @param param
      */
     public WTResponse add(ExchangeTicketSpecificationParam param){
+        //首选查询兑换券名称是否重复
+        ExchangeTicketSpecificationParam exchangeTicketSpecificationParam = new ExchangeTicketSpecificationParam();
+        exchangeTicketSpecificationParam.setTicketName(param.getTicketName());
+        List<ExchangeTicketSpecificationResult> list = this.findListBySpec(exchangeTicketSpecificationParam);
+        if (list.size() != 0) {
+            return WTResponse.error("兑换券名称不可重复");
+        }
         ExchangeTicketSpecification entity = getEntity(param);
         String specificationId = RedisUtil.getServiceKeyHaveDateByType("SPE");
         entity.setSpecificationId(specificationId);

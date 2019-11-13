@@ -58,7 +58,7 @@ public class ExchangeTicketRecordController extends BaseController {
     }
 
     /**
-     * 分页蟹券兑换记录列表
+     * 分页查询已兑换记录列表
      *
      * @author wangbencheng
      * @Date 2019-10-31

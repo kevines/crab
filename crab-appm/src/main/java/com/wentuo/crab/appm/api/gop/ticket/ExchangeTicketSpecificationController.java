@@ -40,6 +40,11 @@ public class ExchangeTicketSpecificationController extends BaseController {
     }
 
 
+    /**
+     * 编辑兑换券属性信息
+     * @param param
+     * @return
+     */
     @PostMapping("/edit.do")
     @NoPermission
     public WTResponse editTicketSpecification(ExchangeTicketSpecificationParam param) {

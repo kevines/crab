@@ -35,8 +35,9 @@ public class TicketController extends BaseController {
      * @return
      */
     @PostMapping("/convert.do")
-    public WTResponse exchangeTicket(String userId, String ticketNo, String mobile, String address) {
-        return this.exchangeTicketService.exchangeTicket(userId, ticketNo, mobile, address);
+    @NoPermission
+    public WTResponse exchangeTicket(String userId, String ticketNo, String userName, String mobile, String address) {
+        return this.exchangeTicketService.exchangeTicket(userId, ticketNo, userName, mobile, address);
     }
 
     /**
@@ -50,6 +51,11 @@ public class TicketController extends BaseController {
         return WTResponse.success(this.exchangeTicketService.findResultByTicketNo(ticketNo));
     }
 
+    /**
+     * 我的蟹券
+     * @param userId
+     * @return
+     */
     @RequestMapping("/ticket/detail.do")
     @NoPermission
     public WTResponse queryTicketByUserId(String userId) {

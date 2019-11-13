@@ -1,5 +1,7 @@
 package com.wentuo.crab.modular.mini.model.result.ticket;
 
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicket;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import lombok.Data;
 import java.util.Date;
 import java.io.Serializable;
@@ -27,6 +29,16 @@ public class ExchangeTicketRecordResult implements Serializable {
      * 兑换券编号
      */
     private String ticketNo;
+
+    /**
+     * 兑换券属性相关信息
+     */
+    private ExchangeTicketSpecificationResult exchangeTicketSpecificationResult;
+
+    /**
+     * 兑换券信息
+     */
+    private ExchangeTicket exchangeTicket;
 
     /**
      * 用户编号

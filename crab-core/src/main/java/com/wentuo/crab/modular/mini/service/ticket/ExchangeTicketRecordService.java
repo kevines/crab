@@ -9,14 +9,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.page.WTPageFactory;
 import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicket;
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketRecord;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketRecordMapper;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketRecordParam;
+import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketRecordResult;
+import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketSpecificationResult;
 import com.wentuo.crab.util.EntityConvertUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +35,12 @@ import java.util.List;
  */
 @Service
 public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecordMapper, ExchangeTicketRecord> {
+
+    @Resource
+    private ExchangeTicketService exchangeTicketService;
+
+    @Resource
+    private ExchangeTicketSpecificationService exchangeTicketSpecificationService;
 
     /**
      * 添加兑换券兑换记录
@@ -79,7 +91,7 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
      */
     public ExchangeTicketRecordResult findById(Long id){
         ExchangeTicketRecord exchangeTicketRecord = this.getById(id);
-        ExchangeTicketRecordResult exchangeTicketRecordResult = EntityConvertUtils.convertAToB(exchangeTicketRecord, ExchangeTicketRecordResult.class);
+        ExchangeTicketRecordResult exchangeTicketRecordResult = this.setObjectResult(exchangeTicketRecord);
         return exchangeTicketRecordResult;
     }
 
@@ -106,7 +118,36 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
         ExchangeTicketRecord entity = getEntity(param);
         QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper<>(entity);
         IPage page = this.page(pageContext, queryWrapper);
+        List<ExchangeTicketRecord> recordList = page.getRecords();
+        List<ExchangeTicketRecordResult> list = new ArrayList<>();
+        recordList.forEach(exchangeTicketRecord -> {
+            list.add(setObjectResult(exchangeTicketRecord));
+        });
+        page.setRecords(list);
         return WTPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 设置蟹券相关属性
+     * @param exchangeTicketRecord
+     * @return
+     */
+    private ExchangeTicketRecordResult setObjectResult(ExchangeTicketRecord exchangeTicketRecord) {
+        ExchangeTicketRecordResult exchangeTicketRecordResult = EntityConvertUtils.convertAToB(exchangeTicketRecord, ExchangeTicketRecordResult.class);
+        String ticketNo = exchangeTicketRecordResult.getTicketNo();
+        ExchangeTicket exchangeTicket = this.exchangeTicketService.findByTicketNo(ticketNo);
+        if (exchangeTicket != null) {
+            Long ticketSpecificationId = exchangeTicket.getSpecificationId();
+            ExchangeTicketSpecificationParam exchangeTicketSpecificationParam = new ExchangeTicketSpecificationParam();
+            exchangeTicketSpecificationParam.setId(ticketSpecificationId);
+            ExchangeTicketSpecificationResult exchangeTicketSpecificationResult = this.exchangeTicketSpecificationService.findBySpec(exchangeTicketSpecificationParam);
+            if (exchangeTicketSpecificationResult != null) {
+                exchangeTicketRecordResult.setExchangeTicketSpecificationResult(exchangeTicketSpecificationResult);
+            }
+            exchangeTicketRecordResult.setExchangeTicket(exchangeTicket);
+        }
+        return exchangeTicketRecordResult;
+
     }
 
     private Serializable getKey(ExchangeTicketRecordParam param){
