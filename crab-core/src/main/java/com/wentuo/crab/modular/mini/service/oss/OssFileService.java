@@ -21,6 +21,16 @@ public interface OssFileService {
     Object uploadImage(MultipartFile picture, Integer size);
 
     /**
+     * 上传图片压缩
+     * @param multipartfile
+     * @param id 图片id
+     * @param folderSecond 二级目录
+     * @return
+     * @throws Exception 异常
+     */
+    Object uploadImageMini(MultipartFile multipartfile, Integer size) throws Exception;
+
+    /**
      * 上传文件接口
      * @param multipartFile
      * @param size 限定上传文件大小

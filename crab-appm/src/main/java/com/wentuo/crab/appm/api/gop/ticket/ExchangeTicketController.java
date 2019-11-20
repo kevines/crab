@@ -49,6 +49,9 @@ public class ExchangeTicketController extends BaseController {
     @NoPermission
     public WTResponse detail(ExchangeTicketParam exchangeTicketParam) {
         ExchangeTicketResult detail = this.exchangeTicketService.findBySpec(exchangeTicketParam);
+        if (detail == null) {
+
+        }
         return WTResponse.success(detail);
     }
 

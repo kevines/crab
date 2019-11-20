@@ -143,6 +143,9 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
      * @return
      */
     private ExchangeTicketRecordResult setObjectResult(ExchangeTicketRecord exchangeTicketRecord) {
+        if (exchangeTicketRecord == null) {
+            return null;
+        }
         ExchangeTicketRecordResult exchangeTicketRecordResult = EntityConvertUtils.convertAToB(exchangeTicketRecord, ExchangeTicketRecordResult.class);
         String ticketNo = exchangeTicketRecordResult.getTicketNo();
         ExchangeTicket exchangeTicket = this.exchangeTicketService.findByTicketNo(ticketNo);

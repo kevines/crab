@@ -1,7 +1,11 @@
 package com.wentuo.crab.appm.api.gop;
 
 import com.wentuo.crab.core.common.annotion.NoPermission;
+import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.modular.mini.service.oss.OssFileService;
+import com.wentuo.crab.modular.mini.service.oss.impl.OssFileServiceImpl;
 import com.wentuo.crab.modular.mini.service.upload.UploadService;
+import com.wentuo.crab.util.BizException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +24,9 @@ public class UploadController {
 
     @Resource
     private UploadService uploadService;
+
+    @Resource
+    private OssFileService ossFileService;
 
     @RequestMapping(method = RequestMethod.POST, path = "/upload/image.do")
     @ResponseBody
@@ -40,5 +47,16 @@ public class UploadController {
     @NoPermission
     public Object deleteFile(String url) {
         return uploadService.deleteFile(url);
+    }
+
+    @RequestMapping(path = "/upload/mini/image.do", method = RequestMethod.POST)
+    @ResponseBody
+    public Object uploadPicture(MultipartFile file) {
+        try {
+             Object pictureUrl = ossFileService.uploadImageMini(file,  20);
+            return WTResponse.success("上传图片成功", pictureUrl);
+        } catch (Exception e) {
+            return WTResponse.error("上传图片失败");
+        }
     }
 }

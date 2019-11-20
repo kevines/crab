@@ -31,15 +31,17 @@ aliyun:
     RoleSessionName: external-username
     DurationSeconds: 3600
     region: cn-hangzhou
-#    endpoint:
-#      in: oss-cn-hangzhou-internal.aliyuncs.com
-#      out: oss-cn-hangzhou.aliyuncs.com
-#    bucket: ganjie-oss
-#    outputBucket: ganjie-oss
-#    accessKeyId: b6M7ONqcAbm2UV1K
-#    accessKeySecret: XkXXQSDIKnKdGXafL3SXGfK7FJa9oC
-#    ossLocation: oss-cn-hangzhou
-#    pipelineId: 346da91e105147a5a1f37f2fe739bfa9
+    endpoint:
+      in: oss-cn-hangzhou-internal.aliyuncs.com
+      out: https://oss-cn-hangzhou.aliyuncs.com
+      domain: https://wt-home.oss-cn-hangzhou.aliyuncs.com
+    bucket: wt-home
+    folder: img
+    outputBucket: ganjie-oss
+    accessKeyId: LTAIeXH1M4yawgwU
+    accessKeySecret: 6Fts5LFF9bTLbhTb6FWKlyds44p7jw
+    ossLocation: oss-cn-hangzhou
+    pipelineId: 346da91e105147a5a1f37f2fe739bfa9
 
 ##邮箱
 spring:

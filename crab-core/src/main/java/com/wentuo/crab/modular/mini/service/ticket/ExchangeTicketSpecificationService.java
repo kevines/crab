@@ -10,6 +10,7 @@ import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.common.page.WTResponse;
 import com.wentuo.crab.core.util.RedisUtil;
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicket;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketRecord;
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import com.wentuo.crab.modular.mini.mapper.ticket.ExchangeTicketSpecificationMapper;
 import com.wentuo.crab.modular.mini.model.excel.ticket.TicketExcelModel;
@@ -43,6 +44,9 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
 
     @Resource
     private ExchangeTicketService exchangeTicketService;
+
+    @Resource
+    private ExchangeTicketRecordService exchangeTicketRecordService;
     /**
      * 添加兑换卷规券记录
      * @param param
@@ -170,7 +174,7 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
      * @param param
      */
     public void delete(ExchangeTicketSpecificationParam param){
-        //批量删除该规格类型下的蟹券
+        //批量删除该规格类型下的蟹券和相关交易记录
         QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ExchangeTicket::getSpecificationId, param.getId());
         List<ExchangeTicket> list = this.exchangeTicketService.getBaseMapper().selectList(queryWrapper);
@@ -178,7 +182,14 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
             ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
             exchangeTicketParam.setId(exchangeTicket.getId());
             this.exchangeTicketService.delete(exchangeTicketParam);
+            String ticketNo = exchangeTicket.getTicketNo();
+            ExchangeTicketRecord exchangeTicketRecord = this.exchangeTicketRecordService.findByTicketNo(ticketNo);
+            if (exchangeTicketRecord != null) {
+                this.exchangeTicketRecordService.getBaseMapper().deleteById(exchangeTicketRecord.getId());
+            }
         });
+
+
         this.removeById(getKey(param));
     }
 

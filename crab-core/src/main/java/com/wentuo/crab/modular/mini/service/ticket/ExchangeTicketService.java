@@ -109,7 +109,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             ExchangeTicketSpecification exchangeTicketSpecification = this.exchangeTicketSpecificationService.getById(exchangeTicket.getSpecificationId());
             int dateResult = DateUtils.compareTimes(exchangeTicketSpecification.getExpiryDate(), new Date());
             if (dateResult != 1) {
-                return WTResponse.error("已超过兑换截止日期，无法den进行兑换操作");
+                return WTResponse.error("已超过兑换截止日期，无法进行兑换操作");
             }
             //查询得到记录,更新兑换券兑换状态
             ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
@@ -197,7 +197,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             //查询兑换券交易记录表中对应的兑换券交易记录信息
             ExchangeTicketRecord exchangeTicketRecord = this.exchangeTicketRecordService.findByTicketNo(ticketNo);
             if (exchangeTicketRecord == null) {
-                return WTResponse.nullResult("为查询到该兑换券记录信息");
+                return WTResponse.nullResult("未查询到该兑换券记录信息");
             }
             //查询到信息记录则更新信息到记录中去
             ExchangeTicketRecordParam exchangeTicketRecordParam = new ExchangeTicketRecordParam();
@@ -353,6 +353,9 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      * @return
      */
     private ExchangeTicketResult setObjectProperty(ExchangeTicket exchangeTicket) {
+        if (exchangeTicket == null) {
+            return null;
+        }
         ExchangeTicketResult exchangeTicketResult = EntityConvertUtils.convertAToB(exchangeTicket, ExchangeTicketResult.class);
         ExchangeTicketSpecification exchangeTicketSpecification = this.exchangeTicketSpecificationService.getById(exchangeTicketResult.getSpecificationId());
         exchangeTicketResult.setGoodName(exchangeTicketSpecification.getGoodName());
