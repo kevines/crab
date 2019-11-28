@@ -301,7 +301,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
     }
 
     /**
-     * 分页查询兑换券列表信息 查询条件兑换券名称 兑换券规格内容 兑换券码
+     * 分页查询兑换券列表信息 查询条件兑换券名称 兑换券规格内容 兑换券码(关联查询效率低，废弃)
      *
      * @param param
      * @return
@@ -345,6 +345,17 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         page.setRecords(list);
         page.setTotal(list.size());
         return WTPageFactory.createPageInfo(page);
+    }
+
+    public WTPageResponse selectTicketListPage(String ticketName, Boolean isExchange,Boolean isSend, String ticketNo) {
+        Page pageContext = getPageContext();
+        long current = pageContext.getCurrent() - 1;
+        long size = pageContext.getSize();
+        Long total = this.baseMapper.selectTicketListCount(ticketName, isExchange, isSend, ticketNo);
+        pageContext.setTotal(total);
+        List list = this.baseMapper.selectTicketListPage(ticketName,isExchange, isSend, ticketNo, current, size);
+        pageContext.setRecords(list);
+        return WTPageFactory.createPageInfo(pageContext);
     }
 
     /**

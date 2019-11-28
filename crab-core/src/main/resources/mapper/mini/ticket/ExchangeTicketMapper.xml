@@ -4,18 +4,68 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicket">
-        <id column="id" property="id" />
-        <result column="specification_id" property="specificationId" />
-        <result column="ticket_no" property="ticketNo" />
-        <result column="is_exchange" property="isExchange" />
-        <result column="is_send" property="isSend" />
-        <result column="exchange_date" property="exchangeDate" />
-        <result column="send_date" property="sendDate" />
+        <id column="id" property="id"/>
+        <result column="specification_id" property="specificationId"/>
+        <result column="ticket_no" property="ticketNo"/>
+        <result column="is_exchange" property="isExchange"/>
+        <result column="is_send" property="isSend"/>
+        <result column="exchange_date" property="exchangeDate"/>
+        <result column="send_date" property="sendDate"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         base.id, base.specification_id, base.ticket_no, base.is_exchange, base.is_send, base.exchange_date, base.send_date
     </sql>
+
+    <!-- 查询全部蟹券列表条件 -->
+    <sql id="crab_ticket_all">
+        where 1=1
+        <if test="ticketName != null and ticketName != ''">
+            and b.ticket_name = #{ticketName}
+        </if>
+        <if test="isExchange != null">
+            and a.is_exchange = #{isExchange}
+        </if>
+        <if test="isSend != null">
+            and a.is_send = #{isSend}
+        </if>
+        <if test="ticketNo != null and ticketNo != ''">
+            and a.ticket_no = #{ticketNo}
+        </if>
+    </sql>
+
+    <sql id="crab_ticket_converted">
+        where a.is_exchange = 1
+        <if test="ticketName != null and ticketName != ''">
+            and b.ticket_name = #{ticketName}
+        </if>
+    </sql>
+    <!-- 根据条件查询蟹券列表 -->
+    <select id="selectTicketListPage" resultType="com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketResult">
+        select
+        a.*,
+        b.specification as specification, b.ticket_name as ticketName, b.good_name as goodName, b.good_pic as goodPic,
+        b.good_num as goodNum, b.expiry_date as expiryDate
+        from exchange_ticket as a
+        left join exchange_ticket_specification as b
+        on a.specification_id = b.id 
+        <include refid="crab_ticket_all"></include>
+        limit #{current}, #{size}
+    </select>
+
+    <!-- 根据条件查询蟹券数量 -->
+    <select id="selectTicketListCount" resultType="java.lang.Long">
+        select count(*)
+        from exchange_ticket as a
+        left join exchange_ticket_specification as b
+        on a.specification_id = b.id
+        <include refid="crab_ticket_all"></include>
+    </select>
+
+    <!-- 根据蟹券规格删除蟹券记录 -->
+    <delete id="deleteTicketBySpecificationId" parameterType="java.lang.Long">
+        delete from exchange_ticket where specification_id = #{specificationId}
+    </delete>
 
 </mapper>

@@ -21,4 +21,8 @@
         base.logistics_name, base.address, base.gmt_created
     </sql>
 
+    <!-- 根据蟹券兑换号删除蟹券兑换记录 -->
+    <delete id="deleteTicketRecordByTicketNo" parameterType="java.lang.String">
+        delete from exchange_ticket_record where ticket_no = #{ticketNo}
+    </delete>
 </mapper>

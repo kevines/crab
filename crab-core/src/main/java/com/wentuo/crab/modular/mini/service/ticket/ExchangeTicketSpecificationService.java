@@ -179,17 +179,18 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
         queryWrapper.lambda().eq(ExchangeTicket::getSpecificationId, param.getId());
         List<ExchangeTicket> list = this.exchangeTicketService.getBaseMapper().selectList(queryWrapper);
         list.forEach(exchangeTicket -> {
-            ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
-            exchangeTicketParam.setId(exchangeTicket.getId());
-            this.exchangeTicketService.delete(exchangeTicketParam);
+//            ExchangeTicketParam exchangeTicketParam = new ExchangeTicketParam();
+//            exchangeTicketParam.setId(exchangeTicket.getId());
+//            this.exchangeTicketService.delete(exchangeTicketParam);
+//            String ticketNo = exchangeTicket.getTicketNo();
+//            ExchangeTicketRecord exchangeTicketRecord = this.exchangeTicketRecordService.findByTicketNo(ticketNo);
+//            if (exchangeTicketRecord != null) {
+//                this.exchangeTicketRecordService.getBaseMapper().deleteById(exchangeTicketRecord.getId());
+//            }
             String ticketNo = exchangeTicket.getTicketNo();
-            ExchangeTicketRecord exchangeTicketRecord = this.exchangeTicketRecordService.findByTicketNo(ticketNo);
-            if (exchangeTicketRecord != null) {
-                this.exchangeTicketRecordService.getBaseMapper().deleteById(exchangeTicketRecord.getId());
-            }
+            this.exchangeTicketRecordService.getBaseMapper().deleteTicketRecordByTicketNo(ticketNo);
         });
-
-
+        this.exchangeTicketService.getBaseMapper().deleteTicketBySpecificationId(param.getId());
         this.removeById(getKey(param));
     }
 

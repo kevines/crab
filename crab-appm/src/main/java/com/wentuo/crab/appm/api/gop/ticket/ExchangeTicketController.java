@@ -61,10 +61,16 @@ public class ExchangeTicketController extends BaseController {
      * @author wangbencheng
      * @Date 2019-10-31
      */
-    @RequestMapping("/page/list.do")
+    @RequestMapping("/page/ss/list.do")
     @NoPermission
     public WTPageResponse list(ExchangeTicketParam exchangeTicketParam) {
         return this.exchangeTicketService.findPageBySpec(exchangeTicketParam);
+    }
+
+    @RequestMapping("/page/list.do")
+    @NoPermission
+    public WTPageResponse list(String ticketName, Boolean isExchange, Boolean isSend, String ticketNo) {
+        return this.exchangeTicketService.selectTicketListPage(ticketName, isExchange, isSend, ticketNo);
     }
 
 }

@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://47.96.16.46:3306/crab?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    url: jdbc:mysql://xxxxx:3306/crab?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
     username: root
-    password: "Yu_8168907"
+    password: "xxxx"
     filters: wall,mergeStat
   redis:
     mode: OFF
-    host: 47.96.16.46
-    port: 6379
+    host: xxxx
+    port: xxxx
     password: SAOjHRGRk68oUk9oZFzk
   env: dev
 

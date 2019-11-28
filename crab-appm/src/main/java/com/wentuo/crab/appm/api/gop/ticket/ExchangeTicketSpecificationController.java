@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.page.WTPageResponse;
 import com.wentuo.crab.core.common.page.WTResponse;
+import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import com.wentuo.crab.modular.mini.model.param.ticket.ExchangeTicketSpecificationParam;
 import com.wentuo.crab.modular.mini.service.ticket.ExchangeTicketSpecificationService;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,17 @@ public class ExchangeTicketSpecificationController extends BaseController {
     @NoPermission
     public WTResponse editTicketSpecification(ExchangeTicketSpecificationParam param) {
         return this.exchangeTicketSpecificationService.update(param);
+    }
+
+    /**
+     * 查询兑换券属性详情
+     * @param param
+     * @return
+     */
+    @RequestMapping("/detail.do")
+    @NoPermission
+    public ExchangeTicketSpecification ticketSpecificationDetail(ExchangeTicketSpecificationParam param) {
+        return this.exchangeTicketSpecificationService.getById(param.getId());
     }
 
     /**

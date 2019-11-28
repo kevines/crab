@@ -37,7 +37,6 @@ aliyun:
       domain: https://wt-home.oss-cn-hangzhou.aliyuncs.com
     bucket: wt-home
     folder: img
-    outputBucket: ganjie-oss
     accessKeyId: LTAIeXH1M4yawgwU
     accessKeySecret: 6Fts5LFF9bTLbhTb6FWKlyds44p7jw
     ossLocation: oss-cn-hangzhou
