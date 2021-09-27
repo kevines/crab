@@ -163,6 +163,7 @@ public class ExchangeTicketSpecificationService extends ServiceImpl<ExchangeTick
                 TicketExcelModel ticketExcelModel = new TicketExcelModel();
                 ticketExcelModel.setTicketName(exchangeTicketSpecification.getTicketName());
                 ticketExcelModel.setTicketNo(exchangeTicket.getTicketNo());
+                ticketExcelModel.setCardNo("NO." + String.format("%09d", exchangeTicket.getId()));
                 list.add(ticketExcelModel);
             });
         }

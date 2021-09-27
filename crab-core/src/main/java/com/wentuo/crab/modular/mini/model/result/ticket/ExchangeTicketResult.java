@@ -2,6 +2,7 @@ package com.wentuo.crab.modular.mini.model.result.ticket;
 
 import com.wentuo.crab.modular.mini.entity.ticket.ExchangeTicketSpecification;
 import lombok.Data;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -58,6 +59,11 @@ public class ExchangeTicketResult implements Serializable {
      * 兑换码
      */
     private String ticketNo;
+
+    /**
+     * 卡号('NO.' + id的9位0充)
+     */
+    private String cardNo;
 
     /**
      * 是否兑换

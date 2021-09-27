@@ -4,6 +4,7 @@ package com.wentuo.crab.modular.mini.service.ticket;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wentuo.crab.core.common.page.WTPageFactory;
@@ -44,18 +45,20 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 添加兑换券兑换记录
+     *
      * @param param
      */
-    public void add(ExchangeTicketRecordParam param){
+    public void add(ExchangeTicketRecordParam param) {
         ExchangeTicketRecord entity = getEntity(param);
         this.save(entity);
     }
 
     /**
      * 删除兑换券兑换记录
+     *
      * @param param
      */
-    public WTResponse delete(ExchangeTicketRecordParam param){
+    public WTResponse delete(ExchangeTicketRecordParam param) {
         boolean flag = this.removeById(getKey(param));
         if (!flag) {
             return WTResponse.error("删除失败");
@@ -65,9 +68,10 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 更新兑换券兑换记录信息
+     *
      * @param param
      */
-    public void update(ExchangeTicketRecordParam param){
+    public void update(ExchangeTicketRecordParam param) {
         ExchangeTicketRecord oldEntity = getOldEntity(param);
         ExchangeTicketRecord newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
@@ -76,6 +80,7 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 通过兑换券号查询对应兑换卷交易记录详情
+     *
      * @param ticketNo
      * @return
      */
@@ -84,12 +89,14 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
         queryWrapper.lambda().eq(ExchangeTicketRecord::getTicketNo, ticketNo);
         return this.baseMapper.selectOne(queryWrapper);
     }
+
     /**
      * 查询兑换群记录兑换详情
+     *
      * @param id 主键id
      * @return
      */
-    public ExchangeTicketRecordResult findById(Long id){
+    public ExchangeTicketRecordResult findById(Long id) {
         ExchangeTicketRecord exchangeTicketRecord = this.getById(id);
         ExchangeTicketRecordResult exchangeTicketRecordResult = this.setObjectResult(exchangeTicketRecord);
         return exchangeTicketRecordResult;
@@ -97,6 +104,7 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 通过兑换码查询兑换记录详情
+     *
      * @param ticketNo
      * @return
      */
@@ -107,10 +115,11 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 查询兑换券记录列表
+     *
      * @param param
      * @return
      */
-    public List<ExchangeTicketRecordResult> findListBySpec(ExchangeTicketRecordParam param){
+    public List<ExchangeTicketRecordResult> findListBySpec(ExchangeTicketRecordParam param) {
         ExchangeTicketRecord exchangeTicketRecord = getEntity(param);
         QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper<>(exchangeTicketRecord);
         List<ExchangeTicketRecord> exchangeTicketRecordList = this.baseMapper.selectList(queryWrapper);
@@ -120,10 +129,11 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 分页查询兑换券记录列表
+     *
      * @param param
      * @return
      */
-    public WTPageResponse findPageBySpec(ExchangeTicketRecordParam param){
+    public WTPageResponse findPageBySpec(ExchangeTicketRecordParam param) {
         Page pageContext = getPageContext();
         ExchangeTicketRecord entity = getEntity(param);
         QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper<>(entity);
@@ -139,6 +149,7 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
 
     /**
      * 设置蟹券相关属性
+     *
      * @param exchangeTicketRecord
      * @return
      */
@@ -158,12 +169,13 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
                 exchangeTicketRecordResult.setExchangeTicketSpecificationResult(exchangeTicketSpecificationResult);
             }
             exchangeTicketRecordResult.setExchangeTicket(exchangeTicket);
+            exchangeTicketRecordResult.setCardNo("NO." + String.format("%09d", exchangeTicket.getId()));
         }
         return exchangeTicketRecordResult;
 
     }
 
-    private Serializable getKey(ExchangeTicketRecordParam param){
+    private Serializable getKey(ExchangeTicketRecordParam param) {
         return param.getId();
     }
 

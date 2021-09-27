@@ -1,6 +1,7 @@
 package com.wentuo.crab.appm.api.gop;
 
 import cn.stylefeng.roses.core.util.MD5Util;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.wentuo.crab.core.common.annotion.NoPermission;
 import com.wentuo.crab.core.common.page.WTResponse;
 import com.wentuo.crab.modular.mini.entity.appuser.AppUser;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 功能描述：登录控制器
+ *
  * @author wangbencheng
  * @version 1.0
  * @className LoginController
@@ -42,36 +45,27 @@ public class LoginController {
     @PostMapping("/gop/login.do")
     @NoPermission
     @ResponseBody
-    public Object gopLogin(@RequestParam("username") String username,
-                           @RequestParam("password") String password) {
-
-
-        if(StringUtils.isBlank(username)){
-            return new WTResponse<>(WTResponse.ERROR,"用户名不能为空");
+    public Object gopLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
+        if (StringUtils.isBlank(username)) {
+            return new WTResponse<>(WTResponse.ERROR, "用户名不能为空");
         }
-
-        if(StringUtils.isBlank(password)){
-            return new WTResponse<>(WTResponse.ERROR,"密码不能为空");
+        if (StringUtils.isBlank(password)) {
+            return new WTResponse<>(WTResponse.ERROR, "密码不能为空");
         }
-
         //获取数据库中的账号密码，准备比对
-        User user = userService.getByAccount(username);
-
-        password = MD5Util.encrypt(password);
-        if(user==null){
-            return new WTResponse<>(WTResponse.ERROR,"用户不存在");
-        }
+        User user = Optional.ofNullable(userService.getByAccount(username)).orElseThrow(() -> new ServiceException(WTResponse.ERROR, "用户不存在"));
+        password = user.getPassword();
         if (password.equals(user.getPassword())) {
             AppUser appUser = new AppUser();
             appUser.setLoginType(Constant.GOP);
             appUser.setUserId(user.getUserId());
             String token = tokenService.getAppUserToken(appUser);
             Map<String, String> result = new HashMap<>(1);
-            logger.info("token:{}",token);
+            logger.info("token:{}", token);
             result.put("token", token);
             return new WTResponse(result);
         } else {
-            return new WTResponse(WTResponse.ERROR,"账号密码错误");
+            return new WTResponse(WTResponse.ERROR, "账号密码错误");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.wentuo.crab.modular.mini.service.ticket;
 
 
+import cn.hutool.core.util.NumberUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -136,6 +137,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
 
     /**
      * 通过兑换券号查询兑换卷信息（图片，规格、数量、名称等信息）
+     *
      * @param ticketNo 兑换券编号
      * @return
      */
@@ -154,6 +156,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
 
     /**
      * 根据用户编号查询蟹券
+     *
      * @param userId
      * @return
      */
@@ -170,6 +173,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         });
         return WTResponse.success(resultList);
     }
+
     /**
      * pc端发货操作
      *
@@ -211,6 +215,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
 
     /**
      * 撤销发货操作（因为物流信息填错或者误操作造成而创建的权限，必须确认是误操作造成的发货错误才能使用该操作）
+     *
      * @param ticketNo 兑换券号码
      * @return
      */
@@ -253,6 +258,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
 
     /**
      * 通过兑换券号查询被封装的兑换券详情
+     *
      * @param ticketNo
      * @return
      */
@@ -261,6 +267,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         ExchangeTicket exchangeTicket = this.findByTicketNo(ticketNo);
         return this.setObjectProperty(exchangeTicket);
     }
+
     /**
      * 查询兑换券详情信息
      *
@@ -275,6 +282,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
 
     /**
      * 通过兑换码属性编号查询兑换券列表信息
+     *
      * @param specificationId
      * @return
      */
@@ -283,6 +291,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         queryWrapper.lambda().eq(ExchangeTicket::getSpecificationId, specificationId);
         return this.baseMapper.selectList(queryWrapper);
     }
+
     /**
      * 查询兑换券列表信息
      *
@@ -294,7 +303,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>(entity);
         List<ExchangeTicket> exchangeTicketList = this.baseMapper.selectList(queryWrapper);
         List<ExchangeTicketResult> exchangeTicketResultList = new ArrayList<>();
-        for (ExchangeTicket exchangeTicket: exchangeTicketList) {
+        for (ExchangeTicket exchangeTicket : exchangeTicketList) {
             exchangeTicketResultList.add(this.setObjectProperty(exchangeTicket));
         }
         return exchangeTicketResultList;
@@ -321,13 +330,13 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         List<ExchangeTicketSpecification> exchangeTicketSpecificationList = this.exchangeTicketSpecificationService.getBaseMapper().selectList(exchangeTicketSpecificationQueryWrapper);
         List<ExchangeTicketResult> list = new ArrayList<>();
         if (exchangeTicketSpecificationList.size() != 0) {
-            for (ExchangeTicketSpecification exchangeTicketSpecification: exchangeTicketSpecificationList) {
+            for (ExchangeTicketSpecification exchangeTicketSpecification : exchangeTicketSpecificationList) {
                 Long id = exchangeTicketSpecification.getId();
                 param.setSpecificationId(id);
                 ExchangeTicket entity = getEntity(param);
                 QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>(entity);
                 List<ExchangeTicket> exchangeTicketList = this.baseMapper.selectList(queryWrapper);
-                for (ExchangeTicket exchangeTicket: exchangeTicketList) {
+                for (ExchangeTicket exchangeTicket : exchangeTicketList) {
                     ExchangeTicketResult exchangeTicketResult = this.setObjectProperty(exchangeTicket);
                     list.add(exchangeTicketResult);
                 }
@@ -336,7 +345,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             ExchangeTicket entity = getEntity(param);
             QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>(entity);
             List<ExchangeTicket> exchangeTicketList = this.baseMapper.selectList(queryWrapper);
-            for (ExchangeTicket exchangeTicket: exchangeTicketList) {
+            for (ExchangeTicket exchangeTicket : exchangeTicketList) {
                 ExchangeTicketResult exchangeTicketResult = this.setObjectProperty(exchangeTicket);
                 list.add(exchangeTicketResult);
             }
@@ -347,19 +356,21 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
         return WTPageFactory.createPageInfo(page);
     }
 
-    public WTPageResponse selectTicketListPage(String ticketName, Boolean isExchange,Boolean isSend, String ticketNo) {
+    public WTPageResponse selectTicketListPage(String ticketName, Boolean isExchange, Boolean isSend, String ticketNo) {
         Page pageContext = getPageContext();
         long current = pageContext.getCurrent() - 1;
         long size = pageContext.getSize();
         Long total = this.baseMapper.selectTicketListCount(ticketName, isExchange, isSend, ticketNo);
         pageContext.setTotal(total);
-        List list = this.baseMapper.selectTicketListPage(ticketName,isExchange, isSend, ticketNo, current, size);
+        List<ExchangeTicketResult> list = this.baseMapper.selectTicketListPage(ticketName, isExchange, isSend, ticketNo, current, size);
+        list.forEach(k -> k.setCardNo("NO." + String.format("%09d", k.getId())));
         pageContext.setRecords(list);
         return WTPageFactory.createPageInfo(pageContext);
     }
 
     /**
      * 设置返回对象属性
+     *
      * @param exchangeTicket
      * @return
      */

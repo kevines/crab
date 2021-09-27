@@ -31,6 +31,12 @@ public class TicketExcelModel extends BaseRowModel {
     @ExcelProperty(value = "兑换号码", index = 1)
     private String ticketNo;
 
+    /**
+     * 蟹券卡号('NO.' + id的9位0充)
+     */
+    @ExcelProperty(value = "卡号", index = 2)
+    private String cardNo;
+
     public String getTicketName() {
         return ticketName;
     }
@@ -45,5 +51,13 @@ public class TicketExcelModel extends BaseRowModel {
 
     public void setTicketNo(String ticketNo) {
         this.ticketNo = ticketNo;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

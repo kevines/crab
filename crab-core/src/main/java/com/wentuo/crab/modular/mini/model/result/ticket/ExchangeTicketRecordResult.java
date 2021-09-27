@@ -31,6 +31,11 @@ public class ExchangeTicketRecordResult implements Serializable {
     private String ticketNo;
 
     /**
+     * 卡号('NO.' + id的9位0充)
+     */
+    private String cardNo;
+
+    /**
      * 兑换券属性相关信息
      */
     private ExchangeTicketSpecificationResult exchangeTicketSpecificationResult;

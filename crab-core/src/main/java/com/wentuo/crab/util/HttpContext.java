@@ -98,13 +98,13 @@ public class HttpContext {
 //        log.info("WL-Proxy-Client-IP:" + request.getHeader("WL-Proxy-Client-IP"));
 //        log.info("HTTP_CLIENT_IP:" + request.getHeader("HTTP_CLIENT_IP"));
 //        log.info("HTTP_X_FORWARDED_FOR:" +  request.getHeader("HTTP_X_FORWARDED_FOR"));
-        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
-            try {
-                ip = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException unknownhostexception) {
-                log.info("获取本地ip失败");
-            }
-        }
+//        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
+//            try {
+//                ip = InetAddress.getLocalHost().getHostAddress();
+//            } catch (UnknownHostException unknownhostexception) {
+//                log.info("获取本地ip失败");
+//            }
+//        }
         return ip;
     }
 
