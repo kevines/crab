@@ -54,7 +54,7 @@ public class LoginController {
         }
         //获取数据库中的账号密码，准备比对
         User user = Optional.ofNullable(userService.getByAccount(username)).orElseThrow(() -> new ServiceException(WTResponse.ERROR, "用户不存在"));
-        password = user.getPassword();
+        password = MD5Util.encrypt(password);
         if (password.equals(user.getPassword())) {
             AppUser appUser = new AppUser();
             appUser.setLoginType(Constant.GOP);
