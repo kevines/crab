@@ -101,7 +101,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
             QueryWrapper<ExchangeTicket> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(ExchangeTicket::getTicketNo, ticketNo);
             ExchangeTicket exchangeTicket = this.baseMapper.selectOne(queryWrapper);
-            if (exchangeTicket == null) {  //查询记录为空
+            if (exchangeTicket == null) {  //查询记录为空123
                 return WTResponse.nullResult("未查询到该兑换券记录");
             }
             if (exchangeTicket.getIsExchange()) {
