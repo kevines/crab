@@ -94,7 +94,7 @@ public class ExchangeTicketService extends ServiceImpl<ExchangeTicketMapper, Exc
      * @param address  收货地址信息
      * @return
      */
-    public WTResponse exchangeTicket(String userId, String ticketNo, String userName, String mobile, String address) {
+    public synchronized WTResponse exchangeTicket(String userId, String ticketNo, String userName, String mobile, String address) {
         if (StringUtil.isNotEmpty(ticketNo)) {  //判断兑换券号是否为空
             ticketNo = ticketNo.toUpperCase();
             //查询兑换券号是否存在
