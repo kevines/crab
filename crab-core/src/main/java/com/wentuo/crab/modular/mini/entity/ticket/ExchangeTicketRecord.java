@@ -68,19 +68,24 @@ public class ExchangeTicketRecord implements Serializable {
      */
     private Date gmtCreated;
 
+    /**
+     * 备注
+     */
+    private String remark;
+
 
     @Override
     public String toString() {
         return "ExchangeTicketRecord{" +
-        "id=" + id +
-        ", ticketNo=" + ticketNo +
-        ", userId=" + userId +
-        ", userName=" + userName +
-        ", mobile=" + mobile +
-        ", logisticsNo=" + logisticsNo +
-        ", logisticsName=" + logisticsName +
-        ", address=" + address +
-        ", gmtCreated=" + gmtCreated +
-        "}";
+            "id=" + id +
+            ", ticketNo=" + ticketNo +
+            ", userId=" + userId +
+            ", userName=" + userName +
+            ", mobile=" + mobile +
+            ", logisticsNo=" + logisticsNo +
+            ", logisticsName=" + logisticsName +
+            ", address=" + address +
+            ", gmtCreated=" + gmtCreated +
+            "}";
     }
 }

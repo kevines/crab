@@ -80,4 +80,9 @@ public class ExchangeTicketRecordResult implements Serializable {
      */
     private Date gmtCreated;
 
+    /**
+     * 备注
+     */
+    private String remark;
+
 }

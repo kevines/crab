@@ -69,10 +69,26 @@ public class ExchangeTicketRecordController extends BaseController {
         return this.exchangeTicketRecordService.findPageBySpec(exchangeTicketRecordParam);
     }
 
+
+    /**
+     * 给兑换记录进行备注
+     *
+     * @param ticketNo 兑换卷
+     * @param remark   备注
+     * @return
+     */
+    @PostMapping("/remark.do")
+    @NoPermission
+    public WTResponse remark(String ticketNo, String remark) {
+        return this.exchangeTicketRecordService.remark(ticketNo, remark);
+    }
+
+
     /**
      * 后端发货按钮
-     * @param ticketNo 兑换券号码
-     * @param logisticsNo 物流单号
+     *
+     * @param ticketNo      兑换券号码
+     * @param logisticsNo   物流单号
      * @param logisticsName 物流名称
      * @return
      */
@@ -84,6 +100,7 @@ public class ExchangeTicketRecordController extends BaseController {
 
     /**
      * 后端撤销发货按钮
+     *
      * @param ticketNo 兑换券号码
      * @return
      */
