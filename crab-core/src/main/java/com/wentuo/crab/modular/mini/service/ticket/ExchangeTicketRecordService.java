@@ -19,6 +19,7 @@ import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketRecordResu
 import com.wentuo.crab.modular.mini.model.result.ticket.ExchangeTicketSpecificationResult;
 import com.wentuo.crab.util.EntityConvertUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -131,9 +132,10 @@ public class ExchangeTicketRecordService extends ServiceImpl<ExchangeTicketRecor
      * @return 分页查询
      */
     public WTPageResponse findPageBySpec(ExchangeTicketRecordParam param) {
-        Page pageContext = getPageContext();
-        ExchangeTicketRecord entity = getEntity(param);
-        QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper<>(entity);
+        Page pageContext = this.getPageContext();
+        pageContext.setAsc(new String[]{"logistics_no", "gmt_created"});
+        ExchangeTicketRecord entity = this.getEntity(param);
+        QueryWrapper<ExchangeTicketRecord> queryWrapper = new QueryWrapper(entity);
         IPage page = this.page(pageContext, queryWrapper);
         List<ExchangeTicketRecord> recordList = page.getRecords();
         List<ExchangeTicketRecordResult> collect = recordList.stream().map(this::setObjectResult).collect(Collectors.toList());
